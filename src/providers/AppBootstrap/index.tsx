@@ -1,9 +1,9 @@
 import { useEffect } from "react";
-import { View, Text } from "react-native";
 import * as SplashScreen from "expo-splash-screen";
 import { useFonts } from "expo-font";
 import {Inter_400Regular, Inter_500Medium, Inter_600SemiBold, Inter_700Bold} from "@expo-google-fonts/inter";
 import Navigation from "@/navigation";
+import { useAuth } from "@/hooks/useAuth";
 
 void SplashScreen.preventAutoHideAsync();
 
@@ -16,17 +16,21 @@ export default function AppBootstrap() {
     Inter_700Bold,
   });
 
+  const { isInitializing } = useAuth();
+
+  const isAppReady = fontsLoaded && !isInitializing;
+
   useEffect(() => {
     async function prepare() {
       if(fontsLoaded) {
-        await SplashScreen.hideAsync();
+        void SplashScreen.hideAsync();
       }
     }
 
     prepare();
-  }, [fontsLoaded])
+  }, [isAppReady])
 
-  if(!fontsLoaded) {
+  if(!isAppReady) {
     return null;
   }
 
