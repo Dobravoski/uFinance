@@ -8,10 +8,39 @@ export const typography = {
     xxl: 32,
   },
 
-  weights: {
-    regular: "400",
-    medium: "500",
-    semibold: "600",
-    bold: "700",
-  },
+  fontFamilies: {
+    regular: "Inter_400Regular",
+    medium: "Inter_500Medium",
+    semibold: "Inter_600SemiBold",
+    bold: "Inter_700Bold",
+  }
 };
+
+export const textVariants = {
+  heading: {
+    fontSize: typography.sizes.xxl,
+    fontFamily: typography.fontFamilies.bold,
+  },
+
+  title: {
+    fontSize: typography.sizes.xl,
+    fontFamily: typography.fontFamilies.semibold,
+  },
+
+  body: {
+    fontSize: typography.sizes.md,
+    fontFamily: typography.fontFamilies.regular,
+  },
+
+  caption: {
+    fontSize: typography.sizes.sm,
+    fontFamily: typography.fontFamilies.regular,
+  },
+
+  label: {
+    fontSize: typography.sizes.sm,
+    fontFamily: typography.fontFamilies.medium,
+  },
+} as const;
+
+export type TextVariant = keyof typeof textVariants;
