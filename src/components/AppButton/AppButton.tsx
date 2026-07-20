@@ -2,7 +2,7 @@ import { Pressable } from "react-native";
 import { AppButtonProps } from "./types";
 import { styles } from "./styles";
 import { buttonVariants } from "./variants";
-import { AppText } from "@/components";
+import { AppText } from "../AppText";
 
 export const AppButton = ({title, variant="primary", disabled, style, ...rest}: AppButtonProps) => {
 

@@ -7,14 +7,29 @@ export const styles = StyleSheet.create({
     },
 
     input: {
+        flex: 1,
+        paddingVertical: spacing.md,
+        color: colors.text,
+    },
+
+    inputContainer: {
+        flexDirection: "row",
+        alignItems: "center",
+
         borderWidth: 1,
         borderColor: colors.border,
         borderRadius: radius.md,
 
         paddingHorizontal: spacing.md,
-        paddingVertical: spacing.md,
 
         backgroundColor: colors.surface,
-        color: colors.text
+    },
+
+    inputContainerError: {
+        borderColor: colors.danger,
+    },
+
+    error: {
+        color: colors.danger,
     }
 })
