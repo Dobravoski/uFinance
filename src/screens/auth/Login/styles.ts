@@ -42,4 +42,9 @@ export const styles = StyleSheet.create({
     marginLeft: spacing.xs,
     color: colors.primary,
   },
+
+  authErrorText: {
+    color: colors.danger,
+    textAlign: "center",
+  },
 });

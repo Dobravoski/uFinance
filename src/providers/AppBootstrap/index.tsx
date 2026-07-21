@@ -22,7 +22,7 @@ export default function AppBootstrap() {
 
   useEffect(() => {
     async function prepare() {
-      if(fontsLoaded) {
+      if(isAppReady) {
         void SplashScreen.hideAsync();
       }
     }

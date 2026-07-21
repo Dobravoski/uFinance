@@ -4,11 +4,16 @@ import { styles } from "./styles";
 import { LoginFormErros, LoginFormData } from "./types";
 import {AppText, AppTextInput, AppButton, ScreenContainer, AppLogo} from "@/components"
 import { PasswordInput } from "../components/PasswordInput";
+import { useAuth } from "@/hooks/useAuth";
+import { AppError } from "@/utils/AppError";
 
 export function LoginScreen() {
 
+    const { signIn } = useAuth();
+
     const [formData, setFormData] = useState<LoginFormData>({email: "", password: ""});
     const [errors, setErrors] = useState<LoginFormErros>({});
+    const [authError, setAuthError] = useState<string | null>(null);
 
     const validateForm = ({email, password}: LoginFormErros) => {
         const errors: LoginFormErros = {}
@@ -24,10 +29,28 @@ export function LoginScreen() {
         return errors;
     }
 
-    const handleSignIn = () => {
-        const validateErrors = validateForm(formData);
-        setErrors(validateErrors);
-        if(Object.keys(validateErrors).length > 0) return;
+    const handleSignIn = async () => {
+        setAuthError(null);
+
+        const validationErrors = validateForm(formData);
+
+        if (Object.keys(validationErrors).length > 0) {
+            setErrors(validationErrors);
+            return;
+        }
+
+        setErrors({});
+
+        try {
+            await signIn(formData.email, formData.password);
+        } catch (error) {
+            if (error instanceof AppError) {
+                setAuthError(error.message);
+                return;
+            }
+
+            setAuthError("An unexpected error occurred.")
+        }
     }
 
     const handleFieldChange = (field: keyof LoginFormData, value: string) => {
@@ -77,6 +100,12 @@ export function LoginScreen() {
                     onChangeText={(value) => handleFieldChange("password", value)}
                     error={errors.password}
                 />
+
+                {authError && (
+                    <AppText variant="caption" style={styles.authErrorText}>
+                        {authError}
+                    </AppText>
+                )}
 
                 <AppButton
                     title="Entrar"

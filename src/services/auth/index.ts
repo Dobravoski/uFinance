@@ -1,1 +1,2 @@
-export { signIn, signOut, subscribeToAuthChanges } from "./auth.service"
+export * from "./auth.service";
+export * from "./errorMessages";
