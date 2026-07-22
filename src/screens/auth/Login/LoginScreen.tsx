@@ -6,40 +6,33 @@ import {AppText, AppTextInput, AppButton, ScreenContainer, AppLogo} from "@/comp
 import { PasswordInput } from "../components/PasswordInput";
 import { useAuth } from "@/hooks/useAuth";
 import { AppError } from "@/utils/AppError";
+import { validateLoginForm } from "./validation";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { AuthStackParamList } from "@/navigation/types";
+
+type NavigationProps = NativeStackNavigationProp<AuthStackParamList>;
 
 export function LoginScreen() {
 
     const { signIn } = useAuth();
+    const navigation = useNavigation<NavigationProps>();
 
     const [formData, setFormData] = useState<LoginFormData>({email: "", password: ""});
-    const [errors, setErrors] = useState<LoginFormErros>({});
+    const [formErrors, setFormErrors] = useState<LoginFormErros>({});
     const [authError, setAuthError] = useState<string | null>(null);
-
-    const validateForm = ({email, password}: LoginFormErros) => {
-        const errors: LoginFormErros = {}
-
-        if(!email?.trim()) {
-            errors.email = "Informe seu e-mail";
-        }
-
-        if(!password?.trim()) {
-            errors.password = "Informe sua senha";
-        }
-
-        return errors;
-    }
 
     const handleSignIn = async () => {
         setAuthError(null);
 
-        const validationErrors = validateForm(formData);
+        const validationErrors = validateLoginForm(formData);
 
         if (Object.keys(validationErrors).length > 0) {
-            setErrors(validationErrors);
+            setFormErrors(validationErrors);
             return;
         }
 
-        setErrors({});
+        setFormErrors({});
 
         try {
             await signIn(formData.email, formData.password);
@@ -59,8 +52,8 @@ export function LoginScreen() {
             [field]: value,
         }));
 
-        if (errors[field]) {
-            setErrors((previous) => ({
+        if (formErrors[field]) {
+            setFormErrors((previous) => ({
                 ...previous,
                 [field]: undefined,
             }));
@@ -90,7 +83,7 @@ export function LoginScreen() {
                     autoCorrect={false}
                     value={formData.email}
                     onChangeText={(value) => handleFieldChange("email", value)}
-                    error={errors.email}
+                    error={formErrors.email}
                 />
 
                 <PasswordInput 
@@ -98,7 +91,7 @@ export function LoginScreen() {
                     placeholder="Digite sua senha"
                     value={formData.password}
                     onChangeText={(value) => handleFieldChange("password", value)}
-                    error={errors.password}
+                    error={formErrors.password}
                 />
 
                 {authError && (
@@ -118,7 +111,7 @@ export function LoginScreen() {
                     Ainda não possui uma conta?
                 </AppText>
 
-                <Pressable>
+                <Pressable onPress={() => navigation.navigate("Register")}>
                     <AppText variant="body" style={styles.footerLink}>
                         Criar conta
                     </AppText>
