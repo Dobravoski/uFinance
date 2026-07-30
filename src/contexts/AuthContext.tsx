@@ -25,8 +25,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
 
     useEffect(() => {
-        signOut() // Stay here until logout is added to RegisterScreen.
-
         const unsubscribe = subscribeToAuthChanges((user) => {
             setUser(user);
             setIsInitializing(false);

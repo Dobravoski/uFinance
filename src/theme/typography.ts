@@ -8,6 +8,14 @@ export const typography = {
     xxl: 32,
   },
 
+  lineHeights: {
+    xs: 16,
+    sm: 20,
+    md: 24,
+    lg: 28,
+    xl: 32,
+  },
+
   fontFamilies: {
     regular: "Inter_400Regular",
     medium: "Inter_500Medium",
@@ -39,6 +47,11 @@ export const textVariants = {
 
   label: {
     fontSize: typography.sizes.sm,
+    fontFamily: typography.fontFamilies.medium,
+  },
+
+  labelSmall: {
+    fontSize: typography.sizes.xs,
     fontFamily: typography.fontFamilies.medium,
   },
 } as const;
