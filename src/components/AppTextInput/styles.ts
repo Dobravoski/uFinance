@@ -1,11 +1,7 @@
 import { StyleSheet } from "react-native";
-import { colors, radius, spacing } from "@/theme";
+import { colors, metrics, radius, spacing } from "@/theme";
 
 export const styles = StyleSheet.create({
-    container: {
-        gap: spacing.xs
-    },
-
     input: {
         flex: 1,
         paddingVertical: spacing.md,
@@ -16,7 +12,7 @@ export const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
 
-        borderWidth: 1,
+        borderWidth: metrics.strokeWidth,
         borderColor: colors.border,
         borderRadius: radius.md,
 
@@ -27,9 +23,5 @@ export const styles = StyleSheet.create({
 
     inputContainerError: {
         borderColor: colors.danger,
-    },
-
-    error: {
-        color: colors.danger,
     }
 })

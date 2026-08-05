@@ -1,15 +1,15 @@
 import { Image, View } from "react-native";
 import logoImage from "@/assets/unect-logo.png";
-import { styles } from "./styles";
+import { metrics } from "@/theme";
 import { logoSizes } from "./sizes";
 import type { AppLogoProps } from "./types";
+import { styles } from "./styles";
 
 const DEFAULT_SIZE = "lg";
-const LOGO_SCALE = 0.65;
 
 export function AppLogo({ size = DEFAULT_SIZE }: AppLogoProps) {
   const containerSize = logoSizes[size];
-  const imageSize = containerSize * LOGO_SCALE;
+  const imageSize = containerSize * metrics.logoScale;
 
   return (
     <View

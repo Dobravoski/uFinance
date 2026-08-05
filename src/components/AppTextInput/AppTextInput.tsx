@@ -1,24 +1,18 @@
 import { TextInput, View } from "react-native";
-import { AppText } from "../AppText";
+import { FormField } from "../FormField";
 import { styles } from "./styles";
 import type { AppTextInputProps } from "./types";
 
 export const AppTextInput = ({label, containerStyle, inputStyle, leftAccessory, rightAccessory, error, ...rest}: AppTextInputProps) => {
-    return (
-        <View style={[styles.container, containerStyle]}>
-            <AppText variant="label">
-                {label}
-            </AppText>
+  return (
+    <FormField label={label} error={error} containerStyle={containerStyle}>
+      <View style={[styles.inputContainer, error && styles.inputContainerError]}>
+        {leftAccessory}
 
-            <View style={[styles.inputContainer, error && styles.inputContainerError]}>
-                {leftAccessory}
+        <TextInput style={[styles.input, inputStyle]} {...rest} />
 
-                <TextInput style={[styles.input, inputStyle]} {...rest} />
-
-                {rightAccessory}
-            </View>
-
-            {error && (<AppText variant="caption" style={styles.error}>{error}</AppText>)}
-        </View>
-    )
-}
+        {rightAccessory}
+      </View>
+    </FormField>
+  );
+};

@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { colors, spacing } from "@/theme";
+import { colors, metrics, spacing } from "@/theme";
 
 export const styles = StyleSheet.create({
   content: {
@@ -17,7 +17,7 @@ export const styles = StyleSheet.create({
 
   subtitle: {
     marginTop: spacing.sm,
-    maxWidth: 280,
+    maxWidth: metrics.formMaxWidth,
     textAlign: "center",
     color: colors.textSecondary,
   },

@@ -3,6 +3,16 @@ export const metrics = {
 
   bottomTabHeight: 72,
 
+  inputHeight: 52,
+  buttonHeight: 52,
+  formMaxWidth: 280,
+  logoScale: 0.65,
+  pickerIconTop: 14,
+  iconHitSlop: 8,
+  strokeWidth: 1,
+  pressedOpacity: 0.9,
+  pressedOpacityStrong: 0.8,
+
   iconSize: {
     sm: 16,
     md: 20,

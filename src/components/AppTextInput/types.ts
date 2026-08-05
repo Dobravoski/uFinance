@@ -1,14 +1,11 @@
 import { ReactNode } from "react";
-import {StyleProp, TextInputProps, TextStyle, ViewStyle} from "react-native";
+import {StyleProp, TextInputProps, TextStyle} from "react-native";
+import type { FormFieldProps } from "../FormField";
 
-export interface AppTextInputProps extends TextInputProps {
+export interface AppTextInputProps extends TextInputProps, Omit<FormFieldProps, "children" | "label"> {
   label: string;
-
-  containerStyle?: StyleProp<ViewStyle>;
   inputStyle?: StyleProp<TextStyle>;
 
   leftAccessory?: ReactNode;
   rightAccessory?: ReactNode;
-
-  error?: string;
 }

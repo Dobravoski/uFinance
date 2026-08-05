@@ -1,9 +1,9 @@
 import { StyleSheet } from "react-native";
-import { colors, radius, spacing } from "@/theme";
+import { colors, metrics, radius, spacing } from "@/theme";
 
 export const styles = StyleSheet.create({
     base: {
-        height: 52,
+        height: metrics.buttonHeight,
 
         borderRadius: radius.md,
 
@@ -19,11 +19,11 @@ export const styles = StyleSheet.create({
 
     secondary: {
         backgroundColor: colors.surface,
-        borderWidth: 1,
+        borderWidth: metrics.strokeWidth,
         borderColor: colors.border,
     },
 
     pressed: {
-        opacity: 0.9,
+        opacity: metrics.pressedOpacity,
     }
 })
