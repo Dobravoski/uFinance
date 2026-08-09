@@ -7,6 +7,6 @@ export interface SegmentedControlOption<TValue extends string> {
 
 export interface SegmentedControlProps<TValue extends string> extends Omit<FormFieldProps, "children"> {
   value: TValue;
-  options: SegmentedControlOption<TValue>[];
+  options: readonly SegmentedControlOption<TValue>[];
   onValueChange(value: TValue): void;
 }

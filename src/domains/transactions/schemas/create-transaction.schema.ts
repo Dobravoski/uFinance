@@ -1,13 +1,6 @@
 import { z } from 'zod';
 import { EXPENSE_CATEGORIES, INCOME_CATEGORIES } from '../constants';
-
-const MAX_DESCRIPTION_LENGTH = 200;
-
-const baseTransactionSchema = z.object({
-  amount: z.number({error: 'O valor deve ser um número.',}).positive('O valor deve ser maior que zero.'),
-  description: z.string().trim().max(MAX_DESCRIPTION_LENGTH,`A descrição deve ter no máximo ${MAX_DESCRIPTION_LENGTH} caracteres.`).optional(),
-  date: z.date({error: 'Data inválida.'}),
-});
+import { baseTransactionSchema } from './base-transaction.schema';
 
 const incomeTransactionSchema = baseTransactionSchema.extend({
   type: z.literal('income'),
@@ -24,4 +17,4 @@ export const createTransactionSchema = z.discriminatedUnion('type', [
   expenseTransactionSchema,
 ]);
 
-export type CreateTransaction = z.infer<typeof createTransactionSchema>;
+export type CreateTransaction = z.output<typeof createTransactionSchema>;
