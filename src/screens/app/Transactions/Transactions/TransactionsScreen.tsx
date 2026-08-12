@@ -2,11 +2,13 @@ import { useState } from "react";
 import {ActivityIndicator, FlatList, View } from "react-native";
 import { AppButton, AppConfirmationModal, AppText } from "@/components";
 import { TransactionItem, useTransactions } from "@/domains/transactions";
+import { useToast } from "@/contexts/ToastContext";
 import { styles } from "./styles";
 import type { TransactionsScreenProps } from "./types";
 
 export function TransactionsScreen({navigation}: TransactionsScreenProps) {
   const {transactions, isLoading, deleteTransaction } = useTransactions();
+  const { showToast } = useToast();
   const [transactionToDelete, setTransactionToDelete] = useState<string | null>(null);
 
   function handleCreate() {
@@ -29,8 +31,14 @@ export function TransactionsScreen({navigation}: TransactionsScreenProps) {
     if (!transactionToDelete) {
       return;
     }
-    await deleteTransaction(transactionToDelete);
-    setTransactionToDelete(null);
+
+    try {
+      await deleteTransaction(transactionToDelete);
+      showToast({type: 'success', message: 'Transação excluída com sucesso'});
+      setTransactionToDelete(null);
+    } catch {
+      showToast({type: 'error', message: 'Não foi possível excluir a transação'});
+    }
   }
 
   if (isLoading && transactions.length === 0) {

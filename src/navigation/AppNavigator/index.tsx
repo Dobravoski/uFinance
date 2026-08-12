@@ -1,7 +1,5 @@
-import DrawerNavigator from "../DrawerNavigator";
+import RootStackNavigator from '../RootStackNavigator';
 
 export default function AppNavigator() {
-    return (
-        <DrawerNavigator />
-    );
+  return <RootStackNavigator />;
 }

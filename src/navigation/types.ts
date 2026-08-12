@@ -3,16 +3,15 @@ export type AuthStackParamList = {
   Register: undefined;
 };
 
-export type AppDrawerParamList = {
-  HomeTabs: undefined;
-  Profile: undefined;
-  Settings: undefined;
+export type RootStackParamList = {
+  AppDrawer: undefined;
+  Transactions: undefined;
 };
 
-export type BottomTabParamList = {
+export type AppDrawerParamList = {
   Home: undefined;
-  Transactions: undefined;
-  Statistics: undefined;
+  Profile: undefined;
+  Settings: undefined;
 };
 
 export type TransactionStackParamList = {

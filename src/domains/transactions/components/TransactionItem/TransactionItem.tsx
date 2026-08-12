@@ -6,7 +6,7 @@ import { EXPENSE_CATEGORY_LABELS, INCOME_CATEGORY_LABELS } from "@/domains/trans
 import { styles } from "./styles";
 import type { TransactionItemProps } from "./types";
 
-export function TransactionItem({ transaction, onEdit, onDelete }: TransactionItemProps) {
+export function TransactionItem({transaction, onEdit, onDelete}: TransactionItemProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [showActions, setShowActions] = useState(false);
 
@@ -16,6 +16,7 @@ export function TransactionItem({ transaction, onEdit, onDelete }: TransactionIt
   const formattedDate = transaction.date.toLocaleDateString("pt-BR");
 
   const hasDescription = Boolean(transaction.description);
+  const hasActions = Boolean(onEdit || onDelete);
 
   function handleToggleExpanded() {
     if (!hasDescription) {
@@ -31,21 +32,25 @@ export function TransactionItem({ transaction, onEdit, onDelete }: TransactionIt
 
   function handleEdit() {
     setShowActions(false);
-    onEdit();
+    onEdit?.();
   }
 
   function handleDelete() {
     setShowActions(false);
-    onDelete();
+    onDelete?.();
   }
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={styles.mainContent}>
-          <AppText variant="label">{categoryLabel}</AppText>
+          <AppText variant="label">
+            {categoryLabel}
+          </AppText>
 
-          <AppText variant="caption">{formattedDate}</AppText>
+          <AppText variant="caption">
+            {formattedDate}
+          </AppText>
         </View>
 
         <View style={styles.rightContent}>
@@ -53,9 +58,11 @@ export function TransactionItem({ transaction, onEdit, onDelete }: TransactionIt
             {transaction.type === "income" ? `+ ${formattedAmount}` : `- ${formattedAmount}`}
           </AppText>
 
-          <Pressable onPress={handleToggleActions} style={styles.iconButton}>
-            <MoreVertical style={styles.icon} />
-          </Pressable>
+          {hasActions && (
+            <Pressable onPress={handleToggleActions} style={styles.iconButton}>
+              <MoreVertical style={styles.icon} />
+            </Pressable>
+          )}
 
           {hasDescription && (
             <Pressable onPress={handleToggleExpanded} style={styles.iconButton}>
@@ -65,17 +72,23 @@ export function TransactionItem({ transaction, onEdit, onDelete }: TransactionIt
         </View>
       </View>
 
-      {showActions && (
+      {showActions && hasActions && (
         <View style={styles.actions}>
-          <Pressable onPress={handleEdit} style={styles.actionButton}>
-            <AppText variant="label">Editar</AppText>
-          </Pressable>
+          {onEdit && (
+            <Pressable onPress={handleEdit} style={styles.actionButton}>
+              <AppText variant="label">
+                Editar
+              </AppText>
+            </Pressable>
+          )}
 
-          <Pressable onPress={handleDelete} style={styles.actionButton}>
-            <AppText variant="label" style={styles.deleteAction}>
-              Excluir
-            </AppText>
-          </Pressable>
+          {onDelete && (
+            <Pressable onPress={handleDelete} style={styles.actionButton}>
+              <AppText variant="label" style={styles.deleteAction}>
+                Excluir
+              </AppText>
+            </Pressable>
+          )}
         </View>
       )}
 
@@ -84,8 +97,7 @@ export function TransactionItem({ transaction, onEdit, onDelete }: TransactionIt
           <AppText variant="body">
             {transaction.description}
           </AppText>
-        </View>
-      )}
+        </View>)}
     </View>
   );
 }
