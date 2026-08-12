@@ -7,3 +7,4 @@ export * from "./FormField";
 export * from "./SegmentControl";
 export * from "./AppDatePicker";
 export * from "./AppSelect";
+export * from "./AppConfirmationModal";

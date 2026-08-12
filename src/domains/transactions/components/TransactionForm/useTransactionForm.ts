@@ -10,9 +10,9 @@ function getCategoryOptions(type: CreateTransaction['type']) {
 }
 
 export function useTransactionForm({initialValues, onSubmit}: Pick<TransactionFormProps, 'initialValues' | 'onSubmit'>) {
-  const isFirstRender = useRef(true);
+  const previousTransactionType = useRef<CreateTransaction["type"]>(initialValues?.type ?? "expense");
 
-  const {control, watch, setValue, handleSubmit} = useForm<TransactionFormData, undefined, TransactionFormValues>({
+  const {control, watch, setValue, reset, handleSubmit} = useForm<TransactionFormData, undefined, TransactionFormValues>({
     resolver: zodResolver(transactionFormSchema),
     defaultValues: {
       type: initialValues?.type ?? 'expense',
@@ -27,12 +27,30 @@ export function useTransactionForm({initialValues, onSubmit}: Pick<TransactionFo
   const categoryOptions = getCategoryOptions(transactionType);
 
   useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
+    if (!initialValues) {
       return;
     }
 
-    setValue('category', undefined, {
+    previousTransactionType.current =
+      initialValues.type ?? "expense";
+
+    reset({
+      type: initialValues.type ?? "expense",
+      amount: initialValues.amount?.toString() ?? "",
+      category: initialValues.category,
+      date: initialValues.date ?? new Date(),
+      description: initialValues.description ?? "",
+    });
+  }, [initialValues, reset]);
+
+  useEffect(() => {
+    if (previousTransactionType.current === transactionType) {
+      return;
+    }
+
+    previousTransactionType.current = transactionType;
+
+    setValue("category", undefined, {
       shouldDirty: true,
       shouldTouch: true,
       shouldValidate: true,

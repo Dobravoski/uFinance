@@ -1,4 +1,4 @@
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import type { TransactionStackParamList } from "@/navigation/types";
 
-export type TransactionsScreenProps = NativeStackScreenProps<TransactionStackParamList, "TransactionList">;
+export type EditTransactionScreenProps = NativeStackScreenProps<TransactionStackParamList, "EditTransaction">;

@@ -3,6 +3,8 @@ export const metrics = {
 
   bottomTabHeight: 72,
 
+  modalWidth: 320,
+
   inputHeight: 52,
   buttonHeight: 52,
   formMaxWidth: 280,

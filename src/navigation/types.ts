@@ -14,3 +14,9 @@ export type BottomTabParamList = {
   Transactions: undefined;
   Statistics: undefined;
 };
+
+export type TransactionStackParamList = {
+  TransactionList: undefined;
+  CreateTransaction: undefined;
+  EditTransaction: {transactionId: string};
+};

@@ -1,4 +1,6 @@
-import {EXPENSE_CATEGORIES, INCOME_CATEGORIES, TRANSACTION_TYPES} from './';
+import { EXPENSE_CATEGORIES } from "./expense-categories";
+import { INCOME_CATEGORIES } from "./income-categories";
+import { TRANSACTION_TYPES } from "./transaction-types";
 
 function createOptions<T extends string>(values: readonly T[], labels: Readonly<Record<T, string>>): ReadonlyArray<{ label: string; value: T }> {
   return values.map((value) => ({
@@ -7,12 +9,12 @@ function createOptions<T extends string>(values: readonly T[], labels: Readonly<
   }));
 }
 
-const TRANSACTION_TYPE_LABELS: Readonly<Record<(typeof TRANSACTION_TYPES)[number], string>> = {
+export const TRANSACTION_TYPE_LABELS: Readonly<Record<(typeof TRANSACTION_TYPES)[number], string>> = {
   income: 'Receita',
   expense: 'Despesa',
 };
 
-const INCOME_CATEGORY_LABELS: Readonly<Record<(typeof INCOME_CATEGORIES)[number], string>> = {
+export const INCOME_CATEGORY_LABELS: Readonly<Record<(typeof INCOME_CATEGORIES)[number], string>> = {
   salary: 'Salário',
   freelance: 'Freelance',
   investment: 'Investimento',
@@ -20,7 +22,7 @@ const INCOME_CATEGORY_LABELS: Readonly<Record<(typeof INCOME_CATEGORIES)[number]
   other: 'Outros',
 };
 
-const EXPENSE_CATEGORY_LABELS: Readonly<Record<(typeof EXPENSE_CATEGORIES)[number], string>> = {
+export const EXPENSE_CATEGORY_LABELS: Readonly<Record<(typeof EXPENSE_CATEGORIES)[number], string>> = {
   food: 'Alimentação',
   transport: 'Transporte',
   housing: 'Moradia',
