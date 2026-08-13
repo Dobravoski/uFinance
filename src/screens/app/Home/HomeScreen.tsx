@@ -1,5 +1,6 @@
 import { ScreenContainer } from "@/components";
-import { AddTransactionFab, BalanceCard, HomeHeader, MonthlySummary, RecentTransactions } from "./components";
+import { BalanceCard, HomeHeader, MonthlySummary, RecentTransactions } from "./components";
+import { AddTransactionFab } from "../components";
 import { calculateBalance, calculateMonthlySummary, useTransactions } from "@/domains/transactions";
 import { View, ActivityIndicator } from "react-native";
 import { styles, loadingProps } from "./styles";
@@ -19,7 +20,7 @@ export function HomeScreen({navigation}: HomeScreenProps) {
     }
 
     return (
-        <ScreenContainer scrollable={false} contentContainerStyle={styles.container} edges={["left", "right", "bottom"]}>
+        <ScreenContainer contentContainerStyle={styles.container} edges={["left", "right", "bottom"]}>
             <View style={styles.content}>
                 {isLoading ? (
                     <View style={styles.loading}>

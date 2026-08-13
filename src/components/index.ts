@@ -8,3 +8,4 @@ export * from "./SegmentControl";
 export * from "./AppDatePicker";
 export * from "./AppSelect";
 export * from "./AppConfirmationModal";
+export * from "./AppDropdown";

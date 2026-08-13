@@ -45,6 +45,19 @@ function toDate(value: unknown, fallback = new Date()) {
   return fallback;
 }
 
+function toAmount(value: unknown, fallback = 0) {
+  if (typeof value === "number" && Number.isFinite(value)) {
+    return value;
+  }
+  if (typeof value === "string") {
+    const parsed = Number(value.replace(",", "."));
+    if (Number.isFinite(parsed)) {
+      return parsed;
+    }
+  }
+  return fallback;
+}
+
 export class TransactionRepository {
   private transactionsCollection(userId: string) {
     return collection(db, 'users', userId, 'transactions');
@@ -62,7 +75,7 @@ export class TransactionRepository {
     const baseTransaction = {
         id,
         userId: data.userId,
-        amount: data.amount,
+        amount: toAmount(data.amount),
         description: data.description,
         date: toDate(data.date),
         createdAt: toDate(data.createdAt),

@@ -1,10 +1,5 @@
 import { StyleSheet } from "react-native";
-
-import {
-  colors,
-  metrics,
-  spacing,
-} from "@/theme";
+import { colors, spacing } from "@/theme";
 
 export const styles = StyleSheet.create({
   container: {
@@ -15,11 +10,11 @@ export const styles = StyleSheet.create({
   contentContainer: {
     flexGrow: 1,
     padding: spacing.md,
-    gap: spacing.md,
   },
 
   listContent: {
     gap: spacing.sm,
+    paddingTop: spacing.md,
     paddingBottom: spacing.lg,
   },
 
@@ -33,10 +28,6 @@ export const styles = StyleSheet.create({
   emptyText: {
     color: colors.textSecondary,
     textAlign: "center",
-  },
-
-  addButton: {
-    width: "100%",
   },
 
   loading: {

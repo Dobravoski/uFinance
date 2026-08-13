@@ -3,12 +3,31 @@ import { colors, metrics, radius, spacing } from "@/theme";
 
 export const styles = StyleSheet.create({
   container: {
+    flexDirection: "row",
+
     backgroundColor: colors.surface,
 
     borderRadius: radius.md,
     borderWidth: metrics.strokeWidth,
     borderColor: colors.border,
 
+    overflow: "hidden",
+  },
+
+  accent: {
+    width: spacing.xs,
+  },
+
+  incomeAccent: {
+    backgroundColor: colors.success,
+  },
+
+  expenseAccent: {
+    backgroundColor: colors.danger,
+  },
+
+  content: {
+    flex: 1,
     padding: spacing.md,
   },
 
@@ -21,6 +40,14 @@ export const styles = StyleSheet.create({
   mainContent: {
     flex: 1,
     gap: spacing.xs,
+  },
+
+  category: {
+    color: colors.text,
+  },
+
+  date: {
+    color: colors.textSecondary,
   },
 
   rightContent: {
@@ -48,26 +75,6 @@ export const styles = StyleSheet.create({
     color: colors.danger,
   },
 
-  actions: {
-    flexDirection: "row",
-    justifyContent: "flex-end",
-    gap: spacing.md,
-
-    marginTop: spacing.md,
-    paddingTop: spacing.md,
-
-    borderTopWidth: metrics.strokeWidth,
-    borderTopColor: colors.border,
-  },
-
-  actionButton: {
-    paddingVertical: spacing.xs,
-  },
-
-  deleteAction: {
-    color: colors.danger,
-  },
-
   descriptionContainer: {
     marginTop: spacing.md,
     paddingTop: spacing.md,
@@ -75,4 +82,12 @@ export const styles = StyleSheet.create({
     borderTopWidth: metrics.strokeWidth,
     borderTopColor: colors.border,
   },
+
+  description: {
+    color: colors.textSecondary,
+  },
 });
+
+export const iconProps = {
+  strokeWidth: metrics.strokeWidth,
+};
