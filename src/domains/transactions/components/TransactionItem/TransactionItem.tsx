@@ -11,9 +11,9 @@ export function TransactionItem({transaction, onEdit, onDelete}: TransactionItem
   const [showActions, setShowActions] = useState(false);
 
   const categoryLabel = transaction.type === "income" ? INCOME_CATEGORY_LABELS[transaction.category] : EXPENSE_CATEGORY_LABELS[transaction.category];
+  const formattedDate = transaction.date instanceof Date ? transaction.date.toLocaleDateString("pt-BR") : "--/--/----";
 
   const formattedAmount = transaction.amount.toLocaleString("pt-BR", {style: "currency", currency: "BRL"});
-  const formattedDate = transaction.date.toLocaleDateString("pt-BR");
 
   const hasDescription = Boolean(transaction.description);
   const hasActions = Boolean(onEdit || onDelete);

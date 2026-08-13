@@ -29,6 +29,9 @@ export function TransactionProvider({children}: PropsWithChildren) {
     try {
       const transactions = await service.getAll(user.id);
       setTransactions(sortTransactions(transactions));
+    } catch (error) {
+      console.error("Failed to load transactions", error);
+      setTransactions([]);
     } finally {
       setIsLoading(false);
     }
@@ -90,6 +93,10 @@ export function TransactionProvider({children}: PropsWithChildren) {
       setTransactions([]);
     }
   }, [user]);
+
+  useEffect(() => {
+    void loadTransactions();
+  }, [loadTransactions]);
 
   const value = useMemo(() => ({transactions, isLoading, loadTransactions, createTransaction, updateTransaction, deleteTransaction}), [transactions, isLoading, loadTransactions, createTransaction, updateTransaction, deleteTransaction]);
 

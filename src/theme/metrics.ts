@@ -22,5 +22,7 @@ export const metrics = {
     xl: 32,
   },
 
+  fabSize: 56,
+
   tabBarHeight: 64,
 };

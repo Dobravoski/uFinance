@@ -21,6 +21,30 @@ type ExpenseTransactionFirestore = BaseTransactionFirestore & {
 
 type TransactionFirestore = IncomeTransactionFirestore | ExpenseTransactionFirestore;
 
+function toDate(value: unknown, fallback = new Date()) {
+  if (value instanceof Date && !Number.isNaN(value.getTime())) {
+    return value;
+  }
+
+  if (value && typeof value === 'object' && 'toDate' in value && typeof (value as { toDate: () => Date }).toDate === 'function') {
+    const parsed = (value as { toDate: () => Date }).toDate();
+
+    if (parsed instanceof Date && !Number.isNaN(parsed.getTime())) {
+      return parsed;
+    }
+  }
+
+  if (typeof value === 'string' || typeof value === 'number') {
+    const parsed = new Date(value);
+
+    if (!Number.isNaN(parsed.getTime())) {
+      return parsed;
+    }
+  }
+
+  return fallback;
+}
+
 export class TransactionRepository {
   private transactionsCollection(userId: string) {
     return collection(db, 'users', userId, 'transactions');
@@ -40,9 +64,9 @@ export class TransactionRepository {
         userId: data.userId,
         amount: data.amount,
         description: data.description,
-        date: data.date.toDate(),
-        createdAt: data.createdAt.toDate(),
-        updatedAt: data.updatedAt.toDate(),
+        date: toDate(data.date),
+        createdAt: toDate(data.createdAt),
+        updatedAt: toDate(data.updatedAt),
     };
 
     if (data.type === 'income') {

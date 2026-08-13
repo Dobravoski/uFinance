@@ -15,4 +15,8 @@ export const styles = StyleSheet.create({
     paddingHorizontal: spacing.lg,
     paddingVertical: spacing.xl,
   },
+
+  nonScrollableContent: {
+    flex: 1,
+  },
 });

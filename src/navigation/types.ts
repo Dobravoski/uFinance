@@ -1,3 +1,5 @@
+import type { NavigatorScreenParams } from "@react-navigation/native";
+
 export type AuthStackParamList = {
   Login: undefined;
   Register: undefined;
@@ -5,7 +7,7 @@ export type AuthStackParamList = {
 
 export type RootStackParamList = {
   AppDrawer: undefined;
-  Transactions: undefined;
+  Transactions: NavigatorScreenParams<TransactionStackParamList>;
 };
 
 export type AppDrawerParamList = {

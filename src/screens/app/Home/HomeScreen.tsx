@@ -1,12 +1,44 @@
-import { AppButton } from "@/components";
-import { useAuth } from "@/hooks/useAuth";
+import { ScreenContainer } from "@/components";
+import { AddTransactionFab, BalanceCard, HomeHeader, MonthlySummary, RecentTransactions } from "./components";
+import { calculateBalance, calculateMonthlySummary, useTransactions } from "@/domains/transactions";
+import { View, ActivityIndicator } from "react-native";
+import { styles, loadingProps } from "./styles";
+import { HomeScreenProps } from "./types";
 
+export function HomeScreen({navigation}: HomeScreenProps) {
+    const { transactions, isLoading } = useTransactions();
+    const balance = calculateBalance(transactions);
+    const monthlySummary = calculateMonthlySummary(transactions);
 
-export function HomeScreen() {
+    function handleViewAll() {
+        navigation.getParent()?.navigate("Transactions", {screen: "TransactionList"});
+    }
 
-    const { signOut } = useAuth();
+    function handleAddTransaction() {
+        navigation.getParent()?.navigate("Transactions", {screen: "CreateTransaction"});
+    }
 
     return (
-        <AppButton title="Logout" onPress={signOut}/>
-    )
+        <ScreenContainer scrollable={false} contentContainerStyle={styles.container} edges={["left", "right", "bottom"]}>
+            <View style={styles.content}>
+                {isLoading ? (
+                    <View style={styles.loading}>
+                        <ActivityIndicator size="large" {...loadingProps} />
+                    </View>
+                ) : (
+                    <>
+                        <View style={styles.topContent}>
+                            <HomeHeader />
+                            <BalanceCard balance={balance} />
+                            <MonthlySummary income={monthlySummary.income} expense={monthlySummary.expense} />
+                        </View>
+
+                        <RecentTransactions transactions={transactions} onViewAll={handleViewAll} />
+                    </>
+                )}
+            </View>
+
+            <AddTransactionFab onPress={handleAddTransaction} />
+        </ScreenContainer>
+    );
 }

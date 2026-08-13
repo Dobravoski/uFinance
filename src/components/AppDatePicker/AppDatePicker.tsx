@@ -8,6 +8,7 @@ import type { AppDatePickerProps } from "./types";
 
 export function AppDatePicker({label, value, onChange, error, containerStyle, placeholder = "Selecione uma data"}: AppDatePickerProps) {
   const [showPicker, setShowPicker] = useState(false);
+  const currentValue = value ?? new Date();
 
   function handleChange(_: DateTimePickerEvent, selectedDate?: Date) {
     setShowPicker(false);
@@ -29,7 +30,7 @@ export function AppDatePicker({label, value, onChange, error, containerStyle, pl
 
       {showPicker && (
         <DateTimePicker
-          value={value}
+          value={currentValue}
           mode="date"
           display="default"
           onChange={handleChange}
