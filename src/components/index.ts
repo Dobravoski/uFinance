@@ -10,3 +10,4 @@ export * from "./AppSelect";
 export * from "./AppConfirmationModal";
 export * from "./AppDropdown";
 export * from "./AppToast";
+export * from "./AppAvatar";

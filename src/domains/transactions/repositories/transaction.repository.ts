@@ -58,6 +58,14 @@ function toAmount(value: unknown, fallback = 0) {
   return fallback;
 }
 
+function normalizeDescription(value: unknown) {
+  if (typeof value !== "string") {
+    return undefined;
+  }
+  const trimmed = value.trim();
+  return trimmed ? trimmed : undefined;
+}
+
 export class TransactionRepository {
   private transactionsCollection(userId: string) {
     return collection(db, 'users', userId, 'transactions');
@@ -67,6 +75,7 @@ export class TransactionRepository {
     return {
       ...data,
       userId,
+      description: normalizeDescription(data.description) ?? '',
       date: Timestamp.fromDate(data.date),
     };
   }
@@ -76,7 +85,7 @@ export class TransactionRepository {
         id,
         userId: data.userId,
         amount: toAmount(data.amount),
-        description: data.description,
+        description: normalizeDescription(data.description),
         date: toDate(data.date),
         createdAt: toDate(data.createdAt),
         updatedAt: toDate(data.updatedAt),
@@ -135,7 +144,7 @@ export class TransactionRepository {
     const docRef = doc(this.transactionsCollection(userId), transactionId);
 
     const updatedData = {
-      ...data,
+      ...(Object.prototype.hasOwnProperty.call(data, 'description') ? { description: normalizeDescription(data.description) ?? '' } : {}),
       ...(data.date && {date: Timestamp.fromDate(data.date)}),
       updatedAt: Timestamp.now(),
     };

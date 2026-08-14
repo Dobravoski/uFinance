@@ -41,7 +41,7 @@ export function RegisterScreen() {
         }
 
         try {
-            await signUp(formData.email, formData.password);
+            await signUp(formData.name, formData.email, formData.password);
         } catch (error) {
             if (error instanceof AppError) {
                 setAuthError(error.message);

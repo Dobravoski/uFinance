@@ -22,6 +22,13 @@ export const metrics = {
     xl: 32,
   },
 
+  avatarSize: {
+    sm: 32,
+    md: 40,
+    lg: 80,
+    xl: 120,
+  },
+
   fabSize: 56,
 
   tabBarHeight: 64,

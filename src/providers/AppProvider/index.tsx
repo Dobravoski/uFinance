@@ -1,16 +1,17 @@
-import { AuthProvider } from '@/contexts/AuthContext';
-import { ToastProvider } from '@/contexts/ToastContext';
+import { AuthProvider, UserProvider, ToastProvider } from '@/contexts';
 import { TransactionProvider } from '@/domains/transactions/context';
 import AppBootstrap from '@/providers/AppBootstrap';
 
 export default function AppProvider() {
   return (
     <AuthProvider>
-      <ToastProvider>
-        <TransactionProvider>
-          <AppBootstrap />
-        </TransactionProvider>
-      </ToastProvider>
+      <UserProvider>
+        <ToastProvider>
+          <TransactionProvider>
+            <AppBootstrap />
+          </TransactionProvider>
+        </ToastProvider>
+      </UserProvider>
     </AuthProvider>
   );
 }

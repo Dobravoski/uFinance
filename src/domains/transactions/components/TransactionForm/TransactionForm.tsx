@@ -28,7 +28,7 @@ export function TransactionForm({initialValues, onSubmit}: TransactionFormProps)
         render={({ field, fieldState }) => (
           <AppTextInput
             label="Valor"
-            value={field.value}
+            value={typeof field.value === 'string' ? field.value : ''}
             onChangeText={field.onChange}
             onBlur={field.onBlur}
             keyboardType="decimal-pad"
@@ -71,7 +71,7 @@ export function TransactionForm({initialValues, onSubmit}: TransactionFormProps)
         render={({ field, fieldState }) => (
           <AppTextInput
             label="Descrição"
-            value={field.value}
+            value={typeof field.value === 'string' ? field.value : ''}
             onChangeText={field.onChange}
             onBlur={field.onBlur}
             placeholder="Digite uma descrição"

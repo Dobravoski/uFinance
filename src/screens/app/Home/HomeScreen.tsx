@@ -5,9 +5,12 @@ import { calculateBalance, calculateMonthlySummary, useTransactions } from "@/do
 import { View, ActivityIndicator } from "react-native";
 import { styles, loadingProps } from "./styles";
 import { HomeScreenProps } from "./types";
+import { useUser } from "@/hooks";
 
 export function HomeScreen({navigation}: HomeScreenProps) {
     const { transactions, isLoading } = useTransactions();
+    const { user } = useUser();
+
     const balance = calculateBalance(transactions);
     const monthlySummary = calculateMonthlySummary(transactions);
 
@@ -29,7 +32,7 @@ export function HomeScreen({navigation}: HomeScreenProps) {
                 ) : (
                     <>
                         <View style={styles.topContent}>
-                            <HomeHeader />
+                            <HomeHeader userName={user?.name}/>
                             <BalanceCard balance={balance} />
                             <MonthlySummary income={monthlySummary.income} expense={monthlySummary.expense} />
                         </View>
