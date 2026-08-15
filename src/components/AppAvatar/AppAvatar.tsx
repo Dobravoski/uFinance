@@ -1,23 +1,26 @@
 import { Image, Pressable, View } from "react-native";
 import { User } from "lucide-react-native";
+import { useTranslation } from "react-i18next";
 import { useTheme } from "@/hooks/useTheme";
 import { useThemedStyles } from "@/hooks/useThemedStyles";
 import { createStyles, avatarSizes, iconSizes, createIconProps } from "./styles";
 import type { AppAvatarProps } from "./types";
 
-export function AppAvatar({imageUri, size = "md", onPress, accessibilityLabel = "Foto de perfil"}: AppAvatarProps) {
+export function AppAvatar({imageUri, size = "md", onPress, accessibilityLabel}: AppAvatarProps) {
   const { colors } = useTheme();
+  const { t } = useTranslation();
   const styles = useThemedStyles(createStyles);
   const avatarSize = avatarSizes[size];
   const iconSize = iconSizes[size];
   const iconProps = createIconProps(colors);
+  const resolvedAccessibilityLabel = accessibilityLabel ?? t("common.profilePhotoLabel");
 
   const content = imageUri ? (
     <Image
       source={{ uri: imageUri }}
       style={styles.image}
       resizeMode="cover"
-      accessibilityLabel={accessibilityLabel}
+      accessibilityLabel={resolvedAccessibilityLabel}
     />
   ) : (<User size={iconSize} {...iconProps} />);
 
@@ -29,7 +32,7 @@ export function AppAvatar({imageUri, size = "md", onPress, accessibilityLabel = 
         onPress={onPress}
         style={({ pressed }) => [containerStyle, pressed && styles.pressed]}
         accessibilityRole="button"
-        accessibilityLabel={accessibilityLabel}
+        accessibilityLabel={resolvedAccessibilityLabel}
       >
         {content}
       </Pressable>
@@ -41,7 +44,7 @@ export function AppAvatar({imageUri, size = "md", onPress, accessibilityLabel = 
       style={containerStyle}
       accessible
       accessibilityRole="image"
-      accessibilityLabel={accessibilityLabel}
+      accessibilityLabel={resolvedAccessibilityLabel}
     >
       {content}
     </View>

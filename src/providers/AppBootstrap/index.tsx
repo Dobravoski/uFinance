@@ -4,7 +4,7 @@ import { useFonts } from "expo-font";
 import { StatusBar } from "expo-status-bar";
 import { Inter_400Regular, Inter_500Medium, Inter_600SemiBold, Inter_700Bold } from "@expo-google-fonts/inter";
 import Navigation from "@/navigation";
-import { useAuth, useUser, useTheme } from "@/hooks";
+import { useAuth, useUser, useTheme, useLanguage } from "@/hooks";
 
 void SplashScreen.preventAutoHideAsync();
 
@@ -19,8 +19,10 @@ export default function AppBootstrap() {
   const { isInitializing: isAuthInitializing } = useAuth();
   const { isInitializing: isUserInitializing } = useUser();
   const { isInitializing: isThemeInitializing, scheme } = useTheme();
+  const { isInitializing: isLanguageInitializing } = useLanguage();
 
-  const isAppReady = fontsLoaded && !isAuthInitializing && !isUserInitializing && !isThemeInitializing;
+  const isAppReady =
+    fontsLoaded && !isAuthInitializing && !isUserInitializing && !isThemeInitializing && !isLanguageInitializing;
 
   useEffect(() => {
     async function prepare() {

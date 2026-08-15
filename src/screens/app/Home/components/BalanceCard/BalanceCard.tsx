@@ -1,17 +1,20 @@
 import { View } from "react-native";
+import { useTranslation } from "react-i18next";
 import { AppText } from "@/components";
-import { useThemedStyles } from "@/hooks/useThemedStyles";
+import { useThemedStyles, useLanguage } from "@/hooks";
 import { createStyles } from "./styles";
 import type { BalanceCardProps } from "./types";
 
 export function BalanceCard({ balance }: BalanceCardProps) {
   const styles = useThemedStyles(createStyles);
-  const formattedBalance = balance.toLocaleString("pt-BR", {style: "currency", currency: "BRL"});
+  const { t } = useTranslation();
+  const { locale } = useLanguage();
+  const formattedBalance = balance.toLocaleString(locale, {style: "currency", currency: "BRL"});
 
   return (
     <View style={styles.container}>
       <AppText variant="caption" style={styles.label}>
-        Saldo atual
+        {t("home.balanceCard.label")}
       </AppText>
 
       <AppText variant="heading" style={styles.balance}>

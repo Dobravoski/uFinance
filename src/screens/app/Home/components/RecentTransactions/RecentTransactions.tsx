@@ -1,5 +1,6 @@
 import { Pressable, View } from "react-native";
 import { ChevronRight } from "lucide-react-native";
+import { useTranslation } from "react-i18next";
 import { AppText } from "@/components";
 import { TransactionItem } from "@/domains/transactions";
 import { useThemedStyles } from "@/hooks/useThemedStyles";
@@ -10,6 +11,7 @@ const RECENT_TRANSACTIONS_LIMIT = 3;
 
 export function RecentTransactions({transactions, onViewAll}: RecentTransactionsProps) {
   const styles = useThemedStyles(createStyles);
+  const { t } = useTranslation();
   const recentTransactions = [...transactions].sort((first, second) => second.date.getTime() - first.date.getTime()).slice(0, RECENT_TRANSACTIONS_LIMIT);
   const hasTransactions = recentTransactions.length > 0;
 
@@ -17,13 +19,13 @@ export function RecentTransactions({transactions, onViewAll}: RecentTransactions
     <View style={styles.container}>
       <View style={styles.header}>
         <AppText variant="title">
-          Transações recentes
+          {t("home.recentTransactions.title")}
         </AppText>
 
         {hasTransactions && (
           <Pressable onPress={onViewAll} style={styles.viewAllButton}>
             <AppText variant="label" style={styles.viewAllText}>
-              Ver todas
+              {t("home.recentTransactions.viewAll")}
             </AppText>
 
             <ChevronRight style={styles.viewAllIcon} />
@@ -38,11 +40,11 @@ export function RecentTransactions({transactions, onViewAll}: RecentTransactions
       ) : (
         <View style={styles.emptyState}>
           <AppText variant="label" style={styles.emptyTitle}>
-            Nenhuma transação ainda
+            {t("home.recentTransactions.emptyTitle")}
           </AppText>
 
           <AppText variant="body" style={styles.emptyMessage}>
-            Adicione sua primeira transação para começar.
+            {t("home.recentTransactions.emptyMessage")}
           </AppText>
         </View>
       )}

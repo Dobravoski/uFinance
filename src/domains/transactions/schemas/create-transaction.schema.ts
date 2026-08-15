@@ -1,20 +1,25 @@
 import { z } from 'zod';
+import type { TFunction } from 'i18next';
 import { EXPENSE_CATEGORIES, INCOME_CATEGORIES } from '../constants';
-import { baseTransactionSchema } from './base-transaction.schema';
+import { createBaseTransactionSchema } from './base-transaction.schema';
 
-const incomeTransactionSchema = baseTransactionSchema.extend({
-  type: z.literal('income'),
-  category: z.enum(INCOME_CATEGORIES),
-});
+export function createCreateTransactionSchema(t: TFunction) {
+  const baseTransactionSchema = createBaseTransactionSchema(t);
 
-const expenseTransactionSchema = baseTransactionSchema.extend({
-  type: z.literal('expense'),
-  category: z.enum(EXPENSE_CATEGORIES),
-});
+  const incomeTransactionSchema = baseTransactionSchema.extend({
+    type: z.literal('income'),
+    category: z.enum(INCOME_CATEGORIES),
+  });
 
-export const createTransactionSchema = z.discriminatedUnion('type', [
-  incomeTransactionSchema,
-  expenseTransactionSchema,
-]);
+  const expenseTransactionSchema = baseTransactionSchema.extend({
+    type: z.literal('expense'),
+    category: z.enum(EXPENSE_CATEGORIES),
+  });
 
-export type CreateTransaction = z.output<typeof createTransactionSchema>;
+  return z.discriminatedUnion('type', [
+    incomeTransactionSchema,
+    expenseTransactionSchema,
+  ]);
+}
+
+export type CreateTransaction = z.output<ReturnType<typeof createCreateTransactionSchema>>;

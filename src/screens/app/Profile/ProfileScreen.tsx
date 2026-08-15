@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Pressable, View } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { Pencil } from "lucide-react-native";
+import { useTranslation } from "react-i18next";
 import { AppAvatar, AppButton, AppText, AppTextInput, ScreenContainer } from "@/components";
 import { useUser, useToast, useTheme, useThemedStyles } from "@/hooks";
 import { createStyles, createIconProps } from "./styles";
@@ -11,6 +12,7 @@ export function ProfileScreen() {
   const { showToast } = useToast();
   const { colors } = useTheme();
   const styles = useThemedStyles(createStyles);
+  const { t } = useTranslation();
   const iconProps = createIconProps(colors);
 
   const [name, setName] = useState("");
@@ -28,7 +30,7 @@ export function ProfileScreen() {
     return (
       <ScreenContainer>
         <View style={styles.loadingContainer}>
-          <AppText>Carregando perfil...</AppText>
+          <AppText>{t("profile.loading")}</AppText>
         </View>
       </ScreenContainer>
     );
@@ -38,7 +40,7 @@ export function ProfileScreen() {
     return (
       <ScreenContainer>
         <View style={styles.emptyContainer}>
-          <AppText>Não foi possível carregar seu perfil.</AppText>
+          <AppText>{t("profile.loadError")}</AppText>
         </View>
       </ScreenContainer>
     );
@@ -70,10 +72,10 @@ const handleSave = async () => {
     setSelectedImageUri(null);
     setIsEditingName(false);
 
-    showToast({type: "success", message: "Perfil atualizado com sucesso."});
+    showToast({type: "success", message: t("profile.toast.updateSuccess")});
   } catch (error) {
     console.error("Failed to update user profile", error);
-    showToast({type: "error", message: "Não foi possível atualizar o perfil."});
+    showToast({type: "error", message: t("profile.toast.updateError")});
   } finally {
     setIsSaving(false);
   }
@@ -118,14 +120,14 @@ const handleSave = async () => {
             imageUri={imageUri}
             size="xl"
             onPress={() => void handlePickImage()}
-            accessibilityLabel="Alterar foto de perfil"
+            accessibilityLabel={t("profile.changePhotoLabel")}
           />
         </View>
 
         <View style={styles.form}>
           {isEditingName ? (
             <AppTextInput
-              label="Nome"
+              label={t("common.nameLabel")}
               value={name}
               onChangeText={setName}
               autoFocus
@@ -136,7 +138,7 @@ const handleSave = async () => {
           ) : (
             <View style={styles.displayField}>
               <View style={styles.displayContent}>
-                <AppText variant="caption">Nome</AppText>
+                <AppText variant="caption">{t("common.nameLabel")}</AppText>
                 <AppText>{user.name}</AppText>
               </View>
 
@@ -144,7 +146,7 @@ const handleSave = async () => {
                 onPress={() => setIsEditingName(true)}
                 style={({ pressed }) => [styles.editButton, pressed && styles.pressed]}
                 accessibilityRole="button"
-                accessibilityLabel="Editar nome"
+                accessibilityLabel={t("profile.editNameLabel")}
               >
                 <Pencil {...iconProps} />
               </Pressable>
@@ -153,7 +155,7 @@ const handleSave = async () => {
 
           <View style={styles.displayField}>
             <View style={styles.displayContent}>
-              <AppText variant="caption">Email</AppText>
+              <AppText variant="caption">{t("common.emailLabel")}</AppText>
               <AppText>{user.email}</AppText>
             </View>
           </View>
@@ -161,13 +163,13 @@ const handleSave = async () => {
           {canSave || isEditingName ? (
             <View style={styles.actions}>
               <AppButton
-                title={isSaving ? "Salvando..." : "Salvar alterações"}
+                title={isSaving ? t("profile.savingButton") : t("common.saveChanges")}
                 onPress={() => void handleSave()}
                 disabled={!canSave}
               />
 
               <AppButton
-                title="Cancelar"
+                title={t("common.cancel")}
                 variant="secondary"
                 onPress={handleCancelEdit}
                 disabled={isSaving}

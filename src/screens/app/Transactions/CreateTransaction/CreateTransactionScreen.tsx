@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { ScreenContainer } from '@/components';
 import { TransactionForm, useTransactions } from '@/domains/transactions';
 import { useToast } from '@/contexts/ToastContext';
@@ -8,22 +9,23 @@ import type { TransactionStackParamList } from '@/navigation/types';
 type Props = NativeStackScreenProps<TransactionStackParamList, 'CreateTransaction'>;
 
 export function CreateTransactionScreen({ navigation }: Props) {
+  const { t } = useTranslation();
   const { createTransaction } = useTransactions();
   const { showToast } = useToast();
 
 const handleSubmit = async (data: CreateTransaction) => {
   try {
     await createTransaction(data);
-    showToast({type: 'success', message: 'Transação criada com sucesso'});
+    showToast({type: 'success', message: t('transactions.create.toast.success')});
     navigation.goBack();
   } catch {
-    showToast({type: 'error', message: 'Não foi possível criar a transação'});
+    showToast({type: 'error', message: t('transactions.create.toast.error')});
   }
 };
 
   return (
     <ScreenContainer>
-      <TransactionForm onSubmit={handleSubmit} submitLabel="Criar transação"/>
+      <TransactionForm onSubmit={handleSubmit} submitLabel={t('transactions.create.submitButton')}/>
     </ScreenContainer>
   );
 }

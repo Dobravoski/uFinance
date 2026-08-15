@@ -1,14 +1,15 @@
+import type { TFunction } from "i18next";
 import { LoginFormData, LoginFormErros } from "./types";
 
-export function validateLoginForm(formData: LoginFormData): LoginFormErros {
+export function validateLoginForm(formData: LoginFormData, t: TFunction): LoginFormErros {
     const errors: LoginFormErros = {};
 
     if (!formData.email.trim()) {
-        errors.email = "Informe seu e-mail";
+        errors.email = t("validation.email.required");
     }
 
     if (!formData.password.trim()) {
-        errors.password = "Informe sua senha";
+        errors.password = t("validation.password.required");
     }
 
     return errors;

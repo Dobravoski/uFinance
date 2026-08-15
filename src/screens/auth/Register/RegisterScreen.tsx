@@ -1,5 +1,6 @@
 import { View, Pressable } from "react-native";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { AppButton, AppLogo, AppText, AppTextInput, ScreenContainer } from "@/components";
 import { PasswordInput } from "../components/PasswordInput";
 import { RegisterFormData, RegisterFormErrors } from "./types";
@@ -15,6 +16,7 @@ type NavigationProps = NativeStackNavigationProp<AuthStackParamList>;
 
 export function RegisterScreen() {
     const styles = useThemedStyles(createStyles);
+    const { t } = useTranslation();
     const { signUp } = useAuth();
 
     const navigation = useNavigation<NavigationProps>();
@@ -33,7 +35,7 @@ export function RegisterScreen() {
         setAuthError(null);
         setFormErrors({});
 
-        const validationErrors = validateRegisterForm(formData);
+        const validationErrors = validateRegisterForm(formData, t);
 
         if (Object.keys(validationErrors).length > 0) {
             setFormErrors(validationErrors);
@@ -48,7 +50,7 @@ export function RegisterScreen() {
                 return;
             }
 
-            setAuthError("Ocorreu um erro inesperado.");
+            setAuthError(t("common.errors.unexpected"));
         }
     };
 
@@ -72,26 +74,26 @@ export function RegisterScreen() {
                 <AppLogo size="xl" />
 
                 <AppText variant="heading" style={styles.title}>
-                    Criar conta
+                    {t("register.title")}
                 </AppText>
 
                 <AppText variant="body" style={styles.subtitle}>
-                    Crie sua conta para começar a organizar suas finanças.
+                    {t("register.subtitle")}
                 </AppText>
             </View>
 
             <View style={styles.form}>
                 <AppTextInput
-                    label="Nome"
-                    placeholder="Digite seu nome"
+                    label={t("common.nameLabel")}
+                    placeholder={t("register.namePlaceholder")}
                     value={formData.name}
                     onChangeText={(value) => handleFieldChange("name", value)}
                     error={formErrors.name}
                 />
 
                 <AppTextInput
-                    label="E-mail"
-                    placeholder="Digite seu e-mail"
+                    label={t("common.emailLabel")}
+                    placeholder={t("common.emailPlaceholder")}
                     keyboardType="email-address"
                     autoCapitalize="none"
                     autoCorrect={false}
@@ -101,16 +103,16 @@ export function RegisterScreen() {
                 />
 
                 <PasswordInput
-                    label="Senha"
-                    placeholder="Digite sua senha"
+                    label={t("common.passwordLabel")}
+                    placeholder={t("common.passwordPlaceholder")}
                     value={formData.password}
                     onChangeText={(value) => handleFieldChange("password", value)}
                     error={formErrors.password}
                 />
 
                 <PasswordInput
-                    label="Confirmar senha"
-                    placeholder="Confirme sua senha"
+                    label={t("register.confirmPasswordLabel")}
+                    placeholder={t("register.confirmPasswordPlaceholder")}
                     value={formData.confirmPassword}
                     onChangeText={(value) => handleFieldChange("confirmPassword", value)}
                     error={formErrors.confirmPassword}
@@ -123,19 +125,19 @@ export function RegisterScreen() {
                 )}
 
                 <AppButton
-                    title="Criar conta"
+                    title={t("common.createAccount")}
                     onPress={handleSignUp}
                 />
             </View>
 
             <View style={styles.footer}>
                 <AppText variant="body" style={styles.footerText}>
-                    Já possui uma conta?
+                    {t("register.hasAccountText")}
                 </AppText>
 
                 <Pressable onPress={() => navigation.navigate("Login")}>
                     <AppText variant="body" style={styles.footerLink}>
-                        Entrar
+                        {t("common.signIn")}
                     </AppText>
                 </Pressable>
             </View>

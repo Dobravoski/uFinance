@@ -1,5 +1,6 @@
 import { View, Pressable } from "react-native";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { createStyles } from "./styles";
 import { LoginFormErros, LoginFormData } from "./types";
 import { AppText, AppTextInput, AppButton, ScreenContainer, AppLogo } from "@/components"
@@ -15,6 +16,7 @@ type NavigationProps = NativeStackNavigationProp<AuthStackParamList>;
 
 export function LoginScreen() {
     const styles = useThemedStyles(createStyles);
+    const { t } = useTranslation();
 
     const { signIn } = useAuth();
     const navigation = useNavigation<NavigationProps>();
@@ -26,7 +28,7 @@ export function LoginScreen() {
     const handleSignIn = async () => {
         setAuthError(null);
 
-        const validationErrors = validateLoginForm(formData);
+        const validationErrors = validateLoginForm(formData, t);
 
         if (Object.keys(validationErrors).length > 0) {
             setFormErrors(validationErrors);
@@ -43,7 +45,7 @@ export function LoginScreen() {
                 return;
             }
 
-            setAuthError("An unexpected error occurred.")
+            setAuthError(t("common.errors.unexpected"))
         }
     }
 
@@ -67,18 +69,18 @@ export function LoginScreen() {
                 <AppLogo size="xl" />
 
                 <AppText variant="heading" style={styles.title}>
-                    Bem-vindo ao uFinance
+                    {t("login.title")}
                 </AppText>
 
                 <AppText variant="body" style={styles.subtitle}>
-                    Faça login para continuar gerenciando suas finanças.
+                    {t("login.subtitle")}
                 </AppText>
             </View>
 
             <View style={styles.form}>
                 <AppTextInput
-                    label="E-mail"
-                    placeholder="Digite seu e-mail"
+                    label={t("common.emailLabel")}
+                    placeholder={t("common.emailPlaceholder")}
                     keyboardType="email-address"
                     autoCapitalize="none"
                     autoCorrect={false}
@@ -87,9 +89,9 @@ export function LoginScreen() {
                     error={formErrors.email}
                 />
 
-                <PasswordInput 
-                    label="Senha"
-                    placeholder="Digite sua senha"
+                <PasswordInput
+                    label={t("common.passwordLabel")}
+                    placeholder={t("common.passwordPlaceholder")}
                     value={formData.password}
                     onChangeText={(value) => handleFieldChange("password", value)}
                     error={formErrors.password}
@@ -102,19 +104,19 @@ export function LoginScreen() {
                 )}
 
                 <AppButton
-                    title="Entrar"
+                    title={t("common.signIn")}
                     onPress={handleSignIn}
                 />
             </View>
 
             <View style={styles.footer}>
                 <AppText variant="body" style={styles.footerText}>
-                    Ainda não possui uma conta?
+                    {t("login.noAccountText")}
                 </AppText>
 
                 <Pressable onPress={() => navigation.navigate("Register")}>
                     <AppText variant="body" style={styles.footerLink}>
-                        Criar conta
+                        {t("common.createAccount")}
                     </AppText>
                 </Pressable>
             </View>

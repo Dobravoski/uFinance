@@ -4,11 +4,12 @@ import { auth } from "@/services/firebase"
 import { AuthUser } from "@/types/auth"
 import { errorMessages } from "./errorMessages";
 import { AppError } from "@/utils/AppError";
+import i18n from "@/config/i18n";
 
 function handleFirebaseError(error: unknown): never {
     if (error instanceof FirebaseError) {
-        const message = errorMessages[error.code] ?? "Ocorreu um erro inesperado. Tente novamente.";
-        throw new AppError(message);
+        const key = errorMessages[error.code] ?? "auth.errors.unexpected";
+        throw new AppError(i18n.t(key));
     }
 
     throw error;

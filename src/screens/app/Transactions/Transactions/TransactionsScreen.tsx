@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { ActivityIndicator, FlatList, View } from "react-native";
+import { useTranslation } from "react-i18next";
 import { AppConfirmationModal, AppText } from "@/components";
 import { AddTransactionFab } from "../../components";
 import { TransactionItem, useTransactions } from "@/domains/transactions";
@@ -12,6 +13,7 @@ import type { TransactionTypeFilter } from "../components";
 
 export function TransactionsScreen({navigation}: TransactionsScreenProps) {
   const styles = useThemedStyles(createStyles);
+  const { t } = useTranslation();
   const {transactions, isLoading, deleteTransaction} = useTransactions();
   const { showToast } = useToast();
 
@@ -58,10 +60,10 @@ export function TransactionsScreen({navigation}: TransactionsScreenProps) {
 
     try {
       await deleteTransaction(transactionToDelete);
-      showToast({type: "success", message: "Transação excluída com sucesso"});
+      showToast({type: "success", message: t("transactions.list.toast.deleteSuccess")});
       setTransactionToDelete(null);
     } catch {
-      showToast({type: "error", message: "Não foi possível excluir a transação"});
+      showToast({type: "error", message: t("transactions.list.toast.deleteError")});
     }
   }
 
@@ -115,7 +117,7 @@ export function TransactionsScreen({navigation}: TransactionsScreenProps) {
         ListEmptyComponent={
           <View style={styles.emptyContainer}>
             <AppText variant="body" style={styles.emptyText}>
-              {hasTransactions ? "Nenhuma transação encontrada para os filtros selecionados." : "Você ainda não possui transações."}
+              {hasTransactions ? t("transactions.list.emptyFiltered") : t("transactions.list.emptyAll")}
             </AppText>
           </View>
         }
@@ -125,10 +127,10 @@ export function TransactionsScreen({navigation}: TransactionsScreenProps) {
 
       <AppConfirmationModal
         visible={transactionToDelete !== null}
-        title="Excluir transação"
-        message="Tem certeza que deseja excluir esta transação?"
-        cancelLabel="Cancelar"
-        confirmLabel="Excluir"
+        title={t("transactions.list.deleteModal.title")}
+        message={t("transactions.list.deleteModal.message")}
+        cancelLabel={t("common.cancel")}
+        confirmLabel={t("common.delete")}
         onCancel={handleCancelDelete}
         onConfirm={handleConfirmDelete}
       />

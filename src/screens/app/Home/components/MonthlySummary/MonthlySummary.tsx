@@ -1,14 +1,17 @@
 import { View } from "react-native";
 import { ArrowDownLeft, ArrowUpRight } from "lucide-react-native";
+import { useTranslation } from "react-i18next";
 import { AppText } from "@/components";
-import { useThemedStyles } from "@/hooks/useThemedStyles";
+import { useThemedStyles, useLanguage } from "@/hooks";
 import { createStyles } from "./styles";
 import type { MonthlySummaryProps } from "./types";
 
 export function MonthlySummary({income, expense}: MonthlySummaryProps) {
   const styles = useThemedStyles(createStyles);
-  const formattedIncome = income.toLocaleString("pt-BR", {style: "currency", currency: "BRL"});
-  const formattedExpense = expense.toLocaleString("pt-BR", {style: "currency", currency: "BRL"});
+  const { t } = useTranslation();
+  const { locale } = useLanguage();
+  const formattedIncome = income.toLocaleString(locale, {style: "currency", currency: "BRL"});
+  const formattedExpense = expense.toLocaleString(locale, {style: "currency", currency: "BRL"});
 
   return (
     <View style={styles.container}>
@@ -17,7 +20,7 @@ export function MonthlySummary({income, expense}: MonthlySummaryProps) {
           <ArrowUpRight style={styles.incomeIcon} />
 
           <AppText variant="caption">
-            Receitas
+            {t("common.income")}
           </AppText>
         </View>
 
@@ -31,7 +34,7 @@ export function MonthlySummary({income, expense}: MonthlySummaryProps) {
           <ArrowDownLeft style={styles.expenseIcon} />
 
           <AppText variant="caption">
-            Despesas
+            {t("common.expense")}
           </AppText>
         </View>
 

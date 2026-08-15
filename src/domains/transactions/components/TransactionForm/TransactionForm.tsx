@@ -1,13 +1,16 @@
 import { Controller } from 'react-hook-form';
 import { View } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import {AppButton, AppDatePicker, AppSelect, AppTextInput, SegmentedControl } from '@/components';
-import { TRANSACTION_TYPE_OPTIONS } from '../../constants';
+import { getTransactionTypeOptions } from '../../constants';
 import { useTransactionForm } from './useTransactionForm';
 import type { TransactionFormProps } from './types';
 import { styles } from './styles';
 
-export function TransactionForm({initialValues, onSubmit}: TransactionFormProps) {
+export function TransactionForm({initialValues, onSubmit, submitLabel}: TransactionFormProps) {
+  const { t } = useTranslation();
   const { control, categoryOptions, submit } = useTransactionForm({initialValues, onSubmit});
+  const TRANSACTION_TYPE_OPTIONS = getTransactionTypeOptions(t);
 
   return (
     <View style={styles.container}>
@@ -27,7 +30,7 @@ export function TransactionForm({initialValues, onSubmit}: TransactionFormProps)
         name="amount"
         render={({ field, fieldState }) => (
           <AppTextInput
-            label="Valor"
+            label={t("transactions.form.amountLabel")}
             value={typeof field.value === 'string' ? field.value : ''}
             onChangeText={field.onChange}
             onBlur={field.onBlur}
@@ -42,11 +45,11 @@ export function TransactionForm({initialValues, onSubmit}: TransactionFormProps)
         name="category"
         render={({ field, fieldState }) => (
           <AppSelect
-            label="Categoria"
+            label={t("transactions.form.categoryLabel")}
             value={field.value}
             options={categoryOptions}
             onValueChange={field.onChange}
-            placeholder="Selecione uma categoria"
+            placeholder={t("transactions.form.categoryPlaceholder")}
             error={fieldState.error?.message}
           />
         )}
@@ -57,7 +60,7 @@ export function TransactionForm({initialValues, onSubmit}: TransactionFormProps)
         name="date"
         render={({ field, fieldState }) => (
           <AppDatePicker
-            label="Data"
+            label={t("transactions.form.dateLabel")}
             value={field.value}
             onChange={field.onChange}
             error={fieldState.error?.message}
@@ -70,18 +73,18 @@ export function TransactionForm({initialValues, onSubmit}: TransactionFormProps)
         name="description"
         render={({ field, fieldState }) => (
           <AppTextInput
-            label="Descrição"
+            label={t("transactions.form.descriptionLabel")}
             value={typeof field.value === 'string' ? field.value : ''}
             onChangeText={field.onChange}
             onBlur={field.onBlur}
-            placeholder="Digite uma descrição"
+            placeholder={t("transactions.form.descriptionPlaceholder")}
             error={fieldState.error?.message}
             multiline
           />
         )}
       />
 
-      <AppButton title="Salvar" onPress={submit}/>
+      <AppButton title={submitLabel} onPress={submit}/>
     </View>
   );
 }

@@ -1,4 +1,5 @@
 import { View } from "react-native";
+import { useTranslation } from "react-i18next";
 import { createStyles } from "./styles";
 import { useAuth } from "@/hooks/useAuth";
 import { useUser } from "@/hooks/useUser";
@@ -11,18 +12,19 @@ export function DrawerContent(props: DrawerContentComponentProps) {
   const { signOut } = useAuth();
   const { user } = useUser();
   const styles = useThemedStyles(createStyles);
+  const { t } = useTranslation();
 
   return (
     <DrawerContentScrollView {...props}>
       <View style={styles.header}>
-        <AppAvatar imageUri={user?.photoURL} size="md" accessibilityLabel="Foto de perfil" />
+        <AppAvatar imageUri={user?.photoURL} size="md" />
         <View style={styles.userInfo}>
           <AppText variant="label">{user?.name}</AppText>
         </View>
       </View>
 
       <DrawerItem
-        label="Home"
+        label={t("nav.drawer.home")}
         icon={({ color, size }) => <Home color={color} size={size} />}
         style={styles.drawerItem}
         labelStyle={styles.label}
@@ -30,7 +32,7 @@ export function DrawerContent(props: DrawerContentComponentProps) {
       />
 
       <DrawerItem
-        label="Perfil"
+        label={t("nav.drawer.profile")}
         icon={({ color, size }) => <User color={color} size={size} />}
         style={styles.drawerItem}
         labelStyle={styles.label}
@@ -38,7 +40,7 @@ export function DrawerContent(props: DrawerContentComponentProps) {
       />
 
       <DrawerItem
-        label="Configurações"
+        label={t("nav.drawer.settings")}
         icon={({ color, size }) => <Settings color={color} size={size} />}
         style={styles.drawerItem}
         labelStyle={styles.label}
@@ -48,7 +50,7 @@ export function DrawerContent(props: DrawerContentComponentProps) {
       <View style={styles.divider} />
 
       <DrawerItem
-        label="Sair"
+        label={t("nav.drawer.signOut")}
         icon={({ color, size }) => <LogOut color={color} size={size} />}
         style={styles.drawerItem}
         labelStyle={styles.label}

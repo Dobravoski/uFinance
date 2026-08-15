@@ -1,3 +1,4 @@
+import type { TFunction } from "i18next";
 import { EXPENSE_CATEGORIES } from "./expense-categories";
 import { INCOME_CATEGORIES } from "./income-categories";
 import { TRANSACTION_TYPES } from "./transaction-types";
@@ -9,42 +10,45 @@ function createOptions<T extends string>(values: readonly T[], labels: Readonly<
   }));
 }
 
-export const TRANSACTION_TYPE_LABELS: Readonly<Record<(typeof TRANSACTION_TYPES)[number], string>> = {
-  income: 'Receita',
-  expense: 'Despesa',
-};
+export function getTransactionTypeLabels(t: TFunction): Readonly<Record<(typeof TRANSACTION_TYPES)[number], string>> {
+  return {
+    income: t("transactions.types.income"),
+    expense: t("transactions.types.expense"),
+  };
+}
 
-export const INCOME_CATEGORY_LABELS: Readonly<Record<(typeof INCOME_CATEGORIES)[number], string>> = {
-  salary: 'Salário',
-  freelance: 'Freelance',
-  investment: 'Investimento',
-  gift: 'Presente',
-  other: 'Outros',
-};
+export function getIncomeCategoryLabels(t: TFunction): Readonly<Record<(typeof INCOME_CATEGORIES)[number], string>> {
+  return {
+    salary: t("transactions.categories.income.salary"),
+    freelance: t("transactions.categories.income.freelance"),
+    investment: t("transactions.categories.income.investment"),
+    gift: t("transactions.categories.income.gift"),
+    other: t("common.other"),
+  };
+}
 
-export const EXPENSE_CATEGORY_LABELS: Readonly<Record<(typeof EXPENSE_CATEGORIES)[number], string>> = {
-  food: 'Alimentação',
-  transport: 'Transporte',
-  housing: 'Moradia',
-  health: 'Saúde',
-  education: 'Educação',
-  leisure: 'Lazer',
-  shopping: 'Compras',
-  bills: 'Contas',
-  other: 'Outros',
-};
+export function getExpenseCategoryLabels(t: TFunction): Readonly<Record<(typeof EXPENSE_CATEGORIES)[number], string>> {
+  return {
+    food: t("transactions.categories.expense.food"),
+    transport: t("transactions.categories.expense.transport"),
+    housing: t("transactions.categories.expense.housing"),
+    health: t("transactions.categories.expense.health"),
+    education: t("transactions.categories.expense.education"),
+    leisure: t("transactions.categories.expense.leisure"),
+    shopping: t("transactions.categories.expense.shopping"),
+    bills: t("transactions.categories.expense.bills"),
+    other: t("common.other"),
+  };
+}
 
-export const TRANSACTION_TYPE_OPTIONS = createOptions(
-  TRANSACTION_TYPES,
-  TRANSACTION_TYPE_LABELS,
-);
+export function getTransactionTypeOptions(t: TFunction) {
+  return createOptions(TRANSACTION_TYPES, getTransactionTypeLabels(t));
+}
 
-export const INCOME_CATEGORY_OPTIONS = createOptions(
-  INCOME_CATEGORIES,
-  INCOME_CATEGORY_LABELS,
-);
+export function getIncomeCategoryOptions(t: TFunction) {
+  return createOptions(INCOME_CATEGORIES, getIncomeCategoryLabels(t));
+}
 
-export const EXPENSE_CATEGORY_OPTIONS = createOptions(
-  EXPENSE_CATEGORIES,
-  EXPENSE_CATEGORY_LABELS,
-);
+export function getExpenseCategoryOptions(t: TFunction) {
+  return createOptions(EXPENSE_CATEGORIES, getExpenseCategoryLabels(t));
+}

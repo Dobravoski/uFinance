@@ -1,20 +1,25 @@
 import { useState } from "react";
 import { Pressable, View } from "react-native";
 import { ChevronDown, ChevronUp, MoreVertical } from "lucide-react-native";
+import { useTranslation } from "react-i18next";
 import { AppDropdown, AppText } from "@/components";
-import { EXPENSE_CATEGORY_LABELS, INCOME_CATEGORY_LABELS } from "@/domains/transactions/constants";
-import { useThemedStyles } from "@/hooks/useThemedStyles";
+import { getExpenseCategoryLabels, getIncomeCategoryLabels } from "@/domains/transactions/constants";
+import { useThemedStyles, useLanguage } from "@/hooks";
 import { createStyles, iconProps } from "./styles";
 import type { TransactionItemProps } from "./types";
 
 export function TransactionItem({ transaction, onEdit, onDelete }: TransactionItemProps) {
   const styles = useThemedStyles(createStyles);
+  const { t } = useTranslation();
+  const { locale } = useLanguage();
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const categoryLabel = transaction.type === "income" ? INCOME_CATEGORY_LABELS[transaction.category] ?? transaction.category : EXPENSE_CATEGORY_LABELS[transaction.category] ?? transaction.category;
-  const formattedDate = transaction.date instanceof Date ? transaction.date.toLocaleDateString("pt-BR") : "--/--/----";
+  const incomeCategoryLabels = getIncomeCategoryLabels(t);
+  const expenseCategoryLabels = getExpenseCategoryLabels(t);
+  const categoryLabel = transaction.type === "income" ? incomeCategoryLabels[transaction.category] ?? transaction.category : expenseCategoryLabels[transaction.category] ?? transaction.category;
+  const formattedDate = transaction.date instanceof Date ? transaction.date.toLocaleDateString(locale) : "--/--/----";
   const amount = typeof transaction.amount === "number" && Number.isFinite(transaction.amount) ? transaction.amount : Number(transaction.amount) || 0;
-  const formattedAmount = amount.toLocaleString("pt-BR", {style: "currency", currency: "BRL"});
+  const formattedAmount = amount.toLocaleString(locale, {style: "currency", currency: "BRL"});
 
   const hasDescription = Boolean(transaction.description);
   const hasActions = Boolean(onEdit || onDelete);
@@ -56,7 +61,7 @@ export function TransactionItem({ transaction, onEdit, onDelete }: TransactionIt
             </AppText>
 
             {hasActions && (
-              <AppDropdown options={[...(onEdit ? [{label: "Editar", onPress: handleEdit}] : []), ...(onDelete ? [{label: "Excluir", onPress: handleDelete, destructive: true}] : [])]}>
+              <AppDropdown options={[...(onEdit ? [{label: t("common.edit"), onPress: handleEdit}] : []), ...(onDelete ? [{label: t("common.delete"), onPress: handleDelete, destructive: true}] : [])]}>
                 <MoreVertical style={styles.icon} {...iconProps} />
               </AppDropdown>
             )}

@@ -1,16 +1,20 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { transactionFormSchema, type TransactionFormData, type TransactionFormValues, type CreateTransaction } from '../../schemas';
-import { EXPENSE_CATEGORY_OPTIONS, INCOME_CATEGORY_OPTIONS } from '../../constants';
+import { createTransactionFormSchema, type TransactionFormData, type TransactionFormValues, type CreateTransaction } from '../../schemas';
+import { getExpenseCategoryOptions, getIncomeCategoryOptions } from '../../constants';
 import type { TransactionFormProps } from './types';
+import type { TFunction } from 'i18next';
 
-function getCategoryOptions(type: CreateTransaction['type']) {
-  return type === 'income' ? INCOME_CATEGORY_OPTIONS : EXPENSE_CATEGORY_OPTIONS;
+function getCategoryOptions(type: CreateTransaction['type'], t: TFunction) {
+  return type === 'income' ? getIncomeCategoryOptions(t) : getExpenseCategoryOptions(t);
 }
 
 export function useTransactionForm({initialValues, onSubmit}: Pick<TransactionFormProps, 'initialValues' | 'onSubmit'>) {
+  const { t } = useTranslation();
   const previousTransactionType = useRef<CreateTransaction["type"]>(initialValues?.type ?? "expense");
+  const transactionFormSchema = useMemo(() => createTransactionFormSchema(t), [t]);
 
   const {control, watch, setValue, reset, handleSubmit} = useForm<TransactionFormData, undefined, TransactionFormValues>({
     resolver: zodResolver(transactionFormSchema),
@@ -24,7 +28,7 @@ export function useTransactionForm({initialValues, onSubmit}: Pick<TransactionFo
   });
 
   const transactionType = watch('type');
-  const categoryOptions = getCategoryOptions(transactionType);
+  const categoryOptions = getCategoryOptions(transactionType, t);
 
   useEffect(() => {
     if (!initialValues) {
