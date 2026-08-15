@@ -1,8 +1,8 @@
 import { StyleSheet } from "react-native";
+import { metrics, radius, spacing } from "@/theme";
+import type { ThemeColors } from "@/theme/colors";
 
-import { colors, metrics, radius, spacing } from "@/theme";
-
-export const styles = StyleSheet.create({
+export const createStyles = (colors: ThemeColors) => StyleSheet.create({
   container: {
     gap: spacing.md,
   },

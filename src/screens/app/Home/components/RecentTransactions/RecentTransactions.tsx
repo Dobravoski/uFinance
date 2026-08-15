@@ -2,12 +2,14 @@ import { Pressable, View } from "react-native";
 import { ChevronRight } from "lucide-react-native";
 import { AppText } from "@/components";
 import { TransactionItem } from "@/domains/transactions";
-import { styles } from "./styles";
+import { useThemedStyles } from "@/hooks/useThemedStyles";
+import { createStyles } from "./styles";
 import type { RecentTransactionsProps } from "./types";
 
 const RECENT_TRANSACTIONS_LIMIT = 3;
 
 export function RecentTransactions({transactions, onViewAll}: RecentTransactionsProps) {
+  const styles = useThemedStyles(createStyles);
   const recentTransactions = [...transactions].sort((first, second) => second.date.getTime() - first.date.getTime()).slice(0, RECENT_TRANSACTIONS_LIMIT);
   const hasTransactions = recentTransactions.length > 0;
 

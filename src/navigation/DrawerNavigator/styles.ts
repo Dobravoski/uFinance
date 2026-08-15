@@ -1,7 +1,8 @@
 import { StyleSheet } from "react-native";
-import { colors, spacing, textVariants } from "@/theme";
+import { spacing, textVariants } from "@/theme";
+import type { ThemeColors } from "@/theme/colors";
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: ThemeColors) => StyleSheet.create({
   header: {
     flexDirection: "row",
     alignItems: "center",

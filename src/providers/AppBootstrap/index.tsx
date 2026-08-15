@@ -1,9 +1,10 @@
 import { useEffect } from "react";
 import * as SplashScreen from "expo-splash-screen";
 import { useFonts } from "expo-font";
+import { StatusBar } from "expo-status-bar";
 import { Inter_400Regular, Inter_500Medium, Inter_600SemiBold, Inter_700Bold } from "@expo-google-fonts/inter";
 import Navigation from "@/navigation";
-import { useAuth, useUser } from "@/hooks";
+import { useAuth, useUser, useTheme } from "@/hooks";
 
 void SplashScreen.preventAutoHideAsync();
 
@@ -17,8 +18,9 @@ export default function AppBootstrap() {
 
   const { isInitializing: isAuthInitializing } = useAuth();
   const { isInitializing: isUserInitializing } = useUser();
+  const { isInitializing: isThemeInitializing, scheme } = useTheme();
 
-  const isAppReady = fontsLoaded && !isAuthInitializing && !isUserInitializing;
+  const isAppReady = fontsLoaded && !isAuthInitializing && !isUserInitializing && !isThemeInitializing;
 
   useEffect(() => {
     async function prepare() {
@@ -26,7 +28,7 @@ export default function AppBootstrap() {
         void SplashScreen.hideAsync();
       }
     }
-    
+
     prepare();
   }, [isAppReady]);
 
@@ -34,5 +36,10 @@ export default function AppBootstrap() {
     return null;
   }
 
-  return <Navigation />;
+  return (
+    <>
+      <StatusBar style={scheme === "dark" ? "light" : "dark"} />
+      <Navigation />
+    </>
+  );
 }

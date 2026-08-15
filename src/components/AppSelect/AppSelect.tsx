@@ -2,11 +2,16 @@ import RNPickerSelect from "react-native-picker-select";
 import { ChevronDown } from "lucide-react-native";
 import { View } from "react-native";
 import { FormField } from "../FormField";
-import { colors } from "@/theme";
-import { pickerStyles, styles } from "./styles";
+import { useTheme } from "@/hooks/useTheme";
+import { useThemedStyles } from "@/hooks/useThemedStyles";
+import { createPickerStyles, createStyles } from "./styles";
 import type { AppSelectProps } from "./types";
 
 export function AppSelect<TValue extends string>({label, value, options, onValueChange, placeholder, error, containerStyle}: AppSelectProps<TValue>) {
+  const { colors, scheme } = useTheme();
+  const styles = useThemedStyles(createStyles);
+  const pickerStyles = createPickerStyles(colors);
+
   return (
     <FormField label={label} error={error} containerStyle={containerStyle}>
       <View style={[styles.inputContainer, error && styles.inputContainerError]}>
@@ -22,6 +27,7 @@ export function AppSelect<TValue extends string>({label, value, options, onValue
           placeholder={placeholder ? { label: placeholder, value: null } : undefined}
           Icon={() => (<ChevronDown size={20} color={colors.textSecondary}/>)}
           style={pickerStyles}
+          darkTheme={scheme === "dark"}
         />
       </View>
     </FormField>

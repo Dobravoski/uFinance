@@ -1,7 +1,8 @@
 import { StyleSheet } from "react-native";
-import { colors, metrics, radius, spacing } from "@/theme";
+import { metrics, radius, spacing } from "@/theme";
+import type { ThemeColors } from "@/theme/colors";
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: ThemeColors) => StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
@@ -67,8 +68,8 @@ export const styles = StyleSheet.create({
   },
 });
 
-export const iconProps = {
+export const createIconProps = (colors: ThemeColors) => ({
   color: colors.primary,
   size: metrics.iconSize.md,
   strokeWidth: metrics.strokeWidth,
-};
+});

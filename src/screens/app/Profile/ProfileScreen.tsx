@@ -3,13 +3,15 @@ import { Pressable, View } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { Pencil } from "lucide-react-native";
 import { AppAvatar, AppButton, AppText, AppTextInput, ScreenContainer } from "@/components";
-import { useUser } from "@/hooks/useUser";
-import { useToast } from "@/hooks/useToast";
-import { styles, iconProps } from "./styles";
+import { useUser, useToast, useTheme, useThemedStyles } from "@/hooks";
+import { createStyles, createIconProps } from "./styles";
 
 export function ProfileScreen() {
   const {user, isInitializing, updateUser, updateUserPhoto} = useUser();
   const { showToast } = useToast();
+  const { colors } = useTheme();
+  const styles = useThemedStyles(createStyles);
+  const iconProps = createIconProps(colors);
 
   const [name, setName] = useState("");
   const [selectedImageUri, setSelectedImageUri] = useState<string | null>(null);

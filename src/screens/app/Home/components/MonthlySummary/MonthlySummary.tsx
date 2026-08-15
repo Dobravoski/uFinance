@@ -1,10 +1,12 @@
 import { View } from "react-native";
 import { ArrowDownLeft, ArrowUpRight } from "lucide-react-native";
 import { AppText } from "@/components";
-import { styles } from "./styles";
+import { useThemedStyles } from "@/hooks/useThemedStyles";
+import { createStyles } from "./styles";
 import type { MonthlySummaryProps } from "./types";
 
 export function MonthlySummary({income, expense}: MonthlySummaryProps) {
+  const styles = useThemedStyles(createStyles);
   const formattedIncome = income.toLocaleString("pt-BR", {style: "currency", currency: "BRL"});
   const formattedExpense = expense.toLocaleString("pt-BR", {style: "currency", currency: "BRL"});
 

@@ -3,10 +3,12 @@ import { Pressable, View } from "react-native";
 import { ChevronDown, ChevronUp, MoreVertical } from "lucide-react-native";
 import { AppDropdown, AppText } from "@/components";
 import { EXPENSE_CATEGORY_LABELS, INCOME_CATEGORY_LABELS } from "@/domains/transactions/constants";
-import { styles, iconProps } from "./styles";
+import { useThemedStyles } from "@/hooks/useThemedStyles";
+import { createStyles, iconProps } from "./styles";
 import type { TransactionItemProps } from "./types";
 
 export function TransactionItem({ transaction, onEdit, onDelete }: TransactionItemProps) {
+  const styles = useThemedStyles(createStyles);
   const [isExpanded, setIsExpanded] = useState(false);
 
   const categoryLabel = transaction.type === "income" ? INCOME_CATEGORY_LABELS[transaction.category] ?? transaction.category : EXPENSE_CATEGORY_LABELS[transaction.category] ?? transaction.category;

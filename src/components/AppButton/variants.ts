@@ -1,6 +1,6 @@
 import { StyleProp, ViewStyle } from "react-native";
-import { colors } from "@/theme";
-import { styles } from "./styles";
+import type { ThemeColors } from "@/theme/colors";
+import { createStyles } from "./styles";
 import type { ButtonVariant } from "./types";
 
 interface ButtonVariantConfig {
@@ -8,7 +8,7 @@ interface ButtonVariantConfig {
     textColor: string;
 }
 
-export const buttonVariants: Record<ButtonVariant, ButtonVariantConfig> = {
+export const createButtonVariants = (colors: ThemeColors, styles: ReturnType<typeof createStyles>): Record<ButtonVariant, ButtonVariantConfig> => ({
   primary: {
     container: styles.primary,
     textColor: colors.surface,
@@ -18,4 +18,4 @@ export const buttonVariants: Record<ButtonVariant, ButtonVariantConfig> = {
     container: styles.secondary,
     textColor: colors.primary,
   },
-};
+});

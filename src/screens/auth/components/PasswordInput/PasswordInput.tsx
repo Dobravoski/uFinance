@@ -3,10 +3,11 @@ import { Pressable } from "react-native";
 import { PasswordInputProps } from "./types";
 import { AppTextInput } from "@/components";
 import { Eye, EyeOff } from "lucide-react-native";
-import { colors, metrics } from "@/theme";
-
+import { metrics } from "@/theme";
+import { useTheme } from "@/hooks/useTheme";
 
 export function PasswordInput({...props}: PasswordInputProps) {
+    const { colors } = useTheme();
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
     const handleTogglePasswordVisibility = () => {

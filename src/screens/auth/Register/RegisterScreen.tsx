@@ -3,18 +3,18 @@ import { useState } from "react";
 import { AppButton, AppLogo, AppText, AppTextInput, ScreenContainer } from "@/components";
 import { PasswordInput } from "../components/PasswordInput";
 import { RegisterFormData, RegisterFormErrors } from "./types";
-import { styles } from "./styles";
+import { createStyles } from "./styles";
 import { validateRegisterForm } from "./validation";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { AuthStackParamList } from "@/navigation/types";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth, useThemedStyles } from "@/hooks";
 import { AppError } from "@/utils/AppError";
 
 type NavigationProps = NativeStackNavigationProp<AuthStackParamList>;
 
 export function RegisterScreen() {
-    
+    const styles = useThemedStyles(createStyles);
     const { signUp } = useAuth();
 
     const navigation = useNavigation<NavigationProps>();

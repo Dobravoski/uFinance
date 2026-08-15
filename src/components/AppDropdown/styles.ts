@@ -1,14 +1,8 @@
 import { StyleSheet } from "react-native";
+import { metrics, radius, shadows, spacing } from "@/theme";
+import type { ThemeColors } from "@/theme/colors";
 
-import {
-  colors,
-  metrics,
-  radius,
-  shadows,
-  spacing,
-} from "@/theme";
-
-export const styles = StyleSheet.create({
+export const createStyles = (colors: ThemeColors) => StyleSheet.create({
   trigger: {
     alignSelf: "flex-start",
   },

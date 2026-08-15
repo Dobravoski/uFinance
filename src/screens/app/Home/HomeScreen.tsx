@@ -3,13 +3,16 @@ import { BalanceCard, HomeHeader, MonthlySummary, RecentTransactions } from "./c
 import { AddTransactionFab } from "../components";
 import { calculateBalance, calculateMonthlySummary, useTransactions } from "@/domains/transactions";
 import { View, ActivityIndicator } from "react-native";
-import { styles, loadingProps } from "./styles";
+import { createStyles, createLoadingProps } from "./styles";
 import { HomeScreenProps } from "./types";
-import { useUser } from "@/hooks";
+import { useUser, useTheme, useThemedStyles } from "@/hooks";
 
 export function HomeScreen({navigation}: HomeScreenProps) {
     const { transactions, isLoading } = useTransactions();
     const { user } = useUser();
+    const { colors } = useTheme();
+    const styles = useThemedStyles(createStyles);
+    const loadingProps = createLoadingProps(colors);
 
     const balance = calculateBalance(transactions);
     const monthlySummary = calculateMonthlySummary(transactions);

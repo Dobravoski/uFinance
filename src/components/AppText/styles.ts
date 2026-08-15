@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
-import { colors } from "@/theme";
+import type { ThemeColors } from "@/theme/colors";
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: ThemeColors) => StyleSheet.create({
     base: {
         color: colors.text
     }

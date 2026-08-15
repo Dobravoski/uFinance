@@ -1,7 +1,8 @@
 import { StyleSheet } from "react-native";
-import { colors, spacing } from "@/theme";
+import { spacing } from "@/theme";
+import type { ThemeColors } from "@/theme/colors";
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: ThemeColors) => StyleSheet.create({
   container: {
     paddingTop: spacing.lg,
     paddingBottom: spacing.xl,
@@ -22,6 +23,6 @@ export const styles = StyleSheet.create({
   },
 });
 
-export const loadingProps = {
+export const createLoadingProps = (colors: ThemeColors) => ({
   color: colors.primary,
-};
+});

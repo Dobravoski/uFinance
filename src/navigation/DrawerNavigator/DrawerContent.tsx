@@ -1,7 +1,8 @@
 import { View } from "react-native";
-import { styles } from "./styles";
+import { createStyles } from "./styles";
 import { useAuth } from "@/hooks/useAuth";
 import { useUser } from "@/hooks/useUser";
+import { useThemedStyles } from "@/hooks/useThemedStyles";
 import { DrawerContentScrollView, DrawerItem, DrawerContentComponentProps } from "@react-navigation/drawer";
 import { User, Settings, LogOut, Home } from "lucide-react-native";
 import { AppAvatar, AppText } from "@/components";
@@ -9,6 +10,7 @@ import { AppAvatar, AppText } from "@/components";
 export function DrawerContent(props: DrawerContentComponentProps) {
   const { signOut } = useAuth();
   const { user } = useUser();
+  const styles = useThemedStyles(createStyles);
 
   return (
     <DrawerContentScrollView {...props}>

@@ -1,6 +1,7 @@
 import { Pressable, View } from "react-native";
 import { AppDatePicker, AppText, SegmentedControl } from "@/components";
-import { styles } from "./styles";
+import { useThemedStyles } from "@/hooks/useThemedStyles";
+import { createStyles } from "./styles";
 import type { TransactionFiltersProps, TransactionTypeFilter } from "./types";
 
 const TYPE_OPTIONS: readonly {label: string; value: TransactionTypeFilter}[] = [
@@ -10,6 +11,7 @@ const TYPE_OPTIONS: readonly {label: string; value: TransactionTypeFilter}[] = [
 ];
 
 export function TransactionFilters({type, startDate, endDate, onTypeChange, onStartDateChange, onEndDateChange, onClear }: TransactionFiltersProps) {
+  const styles = useThemedStyles(createStyles);
   const hasFilters = type !== "all" || startDate !== undefined || endDate !== undefined;
 
   return (

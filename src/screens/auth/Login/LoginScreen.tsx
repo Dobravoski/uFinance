@@ -1,10 +1,10 @@
 import { View, Pressable } from "react-native";
 import { useState } from "react";
-import { styles } from "./styles";
+import { createStyles } from "./styles";
 import { LoginFormErros, LoginFormData } from "./types";
-import {AppText, AppTextInput, AppButton, ScreenContainer, AppLogo} from "@/components"
+import { AppText, AppTextInput, AppButton, ScreenContainer, AppLogo } from "@/components"
 import { PasswordInput } from "../components/PasswordInput";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth, useThemedStyles } from "@/hooks";
 import { AppError } from "@/utils/AppError";
 import { validateLoginForm } from "./validation";
 import { useNavigation } from "@react-navigation/native";
@@ -14,6 +14,7 @@ import { AuthStackParamList } from "@/navigation/types";
 type NavigationProps = NativeStackNavigationProp<AuthStackParamList>;
 
 export function LoginScreen() {
+    const styles = useThemedStyles(createStyles);
 
     const { signIn } = useAuth();
     const navigation = useNavigation<NavigationProps>();

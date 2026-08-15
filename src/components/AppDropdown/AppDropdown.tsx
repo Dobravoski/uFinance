@@ -1,7 +1,8 @@
 import { useRef, useState } from "react";
 import { Modal, Pressable, View, useWindowDimensions } from "react-native";
 import { AppText } from "../AppText";
-import { styles } from "./styles";
+import { useThemedStyles } from "@/hooks/useThemedStyles";
+import { createStyles } from "./styles";
 import type { AppDropdownProps } from "./types";
 
 interface TriggerPosition {
@@ -14,6 +15,7 @@ const DROPDOWN_OFFSET = 4;
 const DROPDOWN_HEIGHT_THRESHOLD = 160;
 
 export function AppDropdown({options, children}: AppDropdownProps) {
+  const styles = useThemedStyles(createStyles);
   const [visible, setVisible] = useState(false);
   const [position, setPosition] = useState<TriggerPosition | null>(null);
 

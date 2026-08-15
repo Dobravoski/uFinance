@@ -1,10 +1,13 @@
 import { Pressable, View } from 'react-native';
 import { AppText } from '../AppText';
 import { FormField } from '../FormField';
-import { styles } from './styles';
+import { useThemedStyles } from '@/hooks/useThemedStyles';
+import { createStyles } from './styles';
 import type { SegmentedControlProps } from './types';
 
 export function SegmentedControl<TValue extends string>({label, value, options, onValueChange, error, containerStyle}: SegmentedControlProps<TValue>) {
+  const styles = useThemedStyles(createStyles);
+
   return (
     <FormField label={label} error={error} containerStyle={containerStyle}>
       <View style={[styles.segmentedControl, error && styles.segmentedControlError]}>

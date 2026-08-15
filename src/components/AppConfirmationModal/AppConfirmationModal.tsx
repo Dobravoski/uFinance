@@ -2,9 +2,12 @@ import { Modal, View } from "react-native";
 import { AppButton } from "../AppButton";
 import { AppText } from "../AppText";
 import type { AppConfirmationModalProps } from "./types";
-import { styles } from "./styles";
+import { useThemedStyles } from "@/hooks/useThemedStyles";
+import { createStyles } from "./styles";
 
 export function AppConfirmationModal({visible, title, message, cancelLabel = "Cancelar", confirmLabel = "Confirmar", onCancel, onConfirm}: AppConfirmationModalProps) {
+  const styles = useThemedStyles(createStyles);
+
   return (
     <Modal visible={visible} transparent animationType="fade" onRequestClose={onCancel}>
       <View style={styles.overlay}>

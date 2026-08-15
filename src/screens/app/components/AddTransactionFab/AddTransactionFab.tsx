@@ -1,9 +1,12 @@
 import { Pressable } from "react-native";
 import { Plus } from "lucide-react-native";
-import { styles, iconProps } from "./styles";
+import { useThemedStyles } from "@/hooks/useThemedStyles";
+import { createStyles, iconProps } from "./styles";
 import type { AddTransactionFabProps } from "./types";
 
 export function AddTransactionFab({onPress}: AddTransactionFabProps) {
+  const styles = useThemedStyles(createStyles);
+
   return (
     <Pressable
       onPress={onPress}

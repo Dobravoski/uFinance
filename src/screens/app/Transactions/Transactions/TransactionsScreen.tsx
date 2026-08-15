@@ -5,11 +5,13 @@ import { AddTransactionFab } from "../../components";
 import { TransactionItem, useTransactions } from "@/domains/transactions";
 import { TransactionFilters } from "../components";
 import { useToast } from "@/contexts/ToastContext";
-import { styles } from "./styles";
+import { useThemedStyles } from "@/hooks/useThemedStyles";
+import { createStyles } from "./styles";
 import type { TransactionsScreenProps } from "./types";
 import type { TransactionTypeFilter } from "../components";
 
 export function TransactionsScreen({navigation}: TransactionsScreenProps) {
+  const styles = useThemedStyles(createStyles);
   const {transactions, isLoading, deleteTransaction} = useTransactions();
   const { showToast } = useToast();
 

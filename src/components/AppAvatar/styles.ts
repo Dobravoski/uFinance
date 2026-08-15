@@ -1,7 +1,8 @@
 import { StyleSheet } from "react-native";
-import { colors, metrics, radius, shadows } from "@/theme";
+import { metrics, radius, shadows } from "@/theme";
+import type { ThemeColors } from "@/theme/colors";
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: ThemeColors) => StyleSheet.create({
   container: {
     borderRadius: radius.full,
     overflow: "hidden",
@@ -37,7 +38,7 @@ export const iconSizes = {
   xl: metrics.iconSize.xl,
 };
 
-export const iconProps = {
+export const createIconProps = (colors: ThemeColors) => ({
   color: colors.primary,
   strokeWidth: metrics.strokeWidth,
-};
+});

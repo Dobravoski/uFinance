@@ -1,11 +1,16 @@
 import { Image, Pressable, View } from "react-native";
 import { User } from "lucide-react-native";
-import { styles, avatarSizes, iconSizes, iconProps } from "./styles";
+import { useTheme } from "@/hooks/useTheme";
+import { useThemedStyles } from "@/hooks/useThemedStyles";
+import { createStyles, avatarSizes, iconSizes, createIconProps } from "./styles";
 import type { AppAvatarProps } from "./types";
 
 export function AppAvatar({imageUri, size = "md", onPress, accessibilityLabel = "Foto de perfil"}: AppAvatarProps) {
+  const { colors } = useTheme();
+  const styles = useThemedStyles(createStyles);
   const avatarSize = avatarSizes[size];
   const iconSize = iconSizes[size];
+  const iconProps = createIconProps(colors);
 
   const content = imageUri ? (
     <Image

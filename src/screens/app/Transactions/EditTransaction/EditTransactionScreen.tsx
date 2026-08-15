@@ -3,10 +3,12 @@ import { ScreenContainer } from "@/components";
 import { TransactionForm, useTransactions } from "@/domains/transactions";
 import { useToast } from "@/contexts/ToastContext";
 import type { CreateTransaction } from "@/domains/transactions/schemas";
-import { styles } from "./styles";
+import { useThemedStyles } from "@/hooks/useThemedStyles";
+import { createStyles } from "./styles";
 import type { EditTransactionScreenProps } from "./types";
 
 export function EditTransactionScreen({navigation, route}: EditTransactionScreenProps) {
+  const styles = useThemedStyles(createStyles);
   const {transactions, isLoading, updateTransaction} = useTransactions();
   const {showToast} = useToast();
   const transaction = transactions.find((item) => item.id === route.params.transactionId);

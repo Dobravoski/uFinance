@@ -1,9 +1,11 @@
 import { View } from "react-native";
 import { AppText } from "@/components";
-import { styles } from "./styles";
+import { useThemedStyles } from "@/hooks/useThemedStyles";
+import { createStyles } from "./styles";
 import type { BalanceCardProps } from "./types";
 
 export function BalanceCard({ balance }: BalanceCardProps) {
+  const styles = useThemedStyles(createStyles);
   const formattedBalance = balance.toLocaleString("pt-BR", {style: "currency", currency: "BRL"});
 
   return (

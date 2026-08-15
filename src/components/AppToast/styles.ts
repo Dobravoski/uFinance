@@ -1,13 +1,8 @@
 import { StyleSheet } from "react-native";
-import {
-  colors,
-  metrics,
-  radius,
-  shadows,
-  spacing,
-} from "@/theme";
+import { metrics, radius, shadows, spacing } from "@/theme";
+import type { ThemeColors } from "@/theme/colors";
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: ThemeColors) => StyleSheet.create({
   container: {
     width: "90%",
     minHeight: metrics.inputHeight,

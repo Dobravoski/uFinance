@@ -3,10 +3,14 @@ import { Pressable } from "react-native";
 import DateTimePicker , { type DateTimePickerEvent } from "@react-native-community/datetimepicker";
 import { AppText } from "../AppText";
 import { FormField } from "../FormField";
-import { styles } from "./styles";
+import { useTheme } from "@/hooks/useTheme";
+import { useThemedStyles } from "@/hooks/useThemedStyles";
+import { createStyles } from "./styles";
 import type { AppDatePickerProps } from "./types";
 
 export function AppDatePicker({label, value, onChange, error, containerStyle, placeholder = "Selecione uma data"}: AppDatePickerProps) {
+  const { scheme } = useTheme();
+  const styles = useThemedStyles(createStyles);
   const [showPicker, setShowPicker] = useState(false);
   const currentValue = value ?? new Date();
 
@@ -33,6 +37,7 @@ export function AppDatePicker({label, value, onChange, error, containerStyle, pl
           value={currentValue}
           mode="date"
           display="default"
+          themeVariant={scheme}
           onChange={handleChange}
         />
       )}

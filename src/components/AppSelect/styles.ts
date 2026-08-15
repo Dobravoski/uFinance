@@ -1,9 +1,9 @@
 import { StyleSheet } from "react-native";
 import type { PickerStyle } from "react-native-picker-select";
+import { metrics, spacing, radius } from "@/theme";
+import type { ThemeColors } from "@/theme/colors";
 
-import { colors, metrics, spacing, radius } from "@/theme";
-
-export const styles = StyleSheet.create({
+export const createStyles = (colors: ThemeColors) => StyleSheet.create({
   inputContainer: {
     borderWidth: metrics.strokeWidth,
     borderColor: colors.border,
@@ -19,7 +19,7 @@ export const styles = StyleSheet.create({
   },
 });
 
-export const pickerStyles = {
+export const createPickerStyles = (colors: ThemeColors): PickerStyle => ({
   inputIOS: {
     color: colors.text,
     paddingVertical: spacing.md,
@@ -44,4 +44,4 @@ export const pickerStyles = {
   viewContainer: {
     justifyContent: "center",
   },
-} satisfies PickerStyle;
+});
