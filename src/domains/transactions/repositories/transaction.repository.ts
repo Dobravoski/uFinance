@@ -144,6 +144,9 @@ export class TransactionRepository {
     const docRef = doc(this.transactionsCollection(userId), transactionId);
 
     const updatedData = {
+      ...(data.amount !== undefined && {amount: data.amount}),
+      ...(data.type && {type: data.type}),
+      ...(data.category && {category: data.category}),
       ...(Object.prototype.hasOwnProperty.call(data, 'description') ? { description: normalizeDescription(data.description) ?? '' } : {}),
       ...(data.date && {date: Timestamp.fromDate(data.date)}),
       updatedAt: Timestamp.now(),

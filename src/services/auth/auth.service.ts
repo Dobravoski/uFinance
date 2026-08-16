@@ -8,7 +8,7 @@ import i18n from "@/config/i18n";
 
 function handleFirebaseError(error: unknown): never {
     if (error instanceof FirebaseError) {
-        const key = errorMessages[error.code] ?? "auth.errors.unexpected";
+        const key = errorMessages[error.code] ?? "common.errors.unexpected";
         throw new AppError(i18n.t(key));
     }
 

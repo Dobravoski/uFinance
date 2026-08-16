@@ -16,7 +16,8 @@ export function TransactionProvider({children}: PropsWithChildren) {
   const { user } = useAuth();
 
   const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isInitializing, setIsInitializing] = useState(false);
+  const [isMutating, setIsMutating] = useState(false);
 
   const loadTransactions = useCallback(async () => {
     if (!user) {
@@ -24,7 +25,7 @@ export function TransactionProvider({children}: PropsWithChildren) {
       return;
     }
 
-    setIsLoading(true);
+    setIsInitializing(true);
 
     try {
       const transactions = await service.getAll(user.id);
@@ -33,7 +34,7 @@ export function TransactionProvider({children}: PropsWithChildren) {
       console.error("Failed to load transactions", error);
       setTransactions([]);
     } finally {
-      setIsLoading(false);
+      setIsInitializing(false);
     }
   }, [user]);
 
@@ -43,13 +44,13 @@ export function TransactionProvider({children}: PropsWithChildren) {
         throw new Error('User not authenticated.');
       }
 
-      setIsLoading(true);
+      setIsMutating(true);
 
       try {
         const transaction = await service.create(user.id, data);
         setTransactions((previous) => sortTransactions([...previous, transaction]));
       } finally {
-        setIsLoading(false);
+        setIsMutating(false);
       }
     }, [user]
   );
@@ -60,13 +61,13 @@ export function TransactionProvider({children}: PropsWithChildren) {
         throw new Error('User not authenticated.');
       }
 
-      setIsLoading(true);
+      setIsMutating(true);
 
       try {
         const transaction = await service.update(user.id, transactionId, data);
         setTransactions((previous) => sortTransactions(previous.map((item) => item.id === transaction.id ? transaction : item)));
       } finally {
-        setIsLoading(false);
+        setIsMutating(false);
       }
     }, [user]
   );
@@ -77,13 +78,13 @@ export function TransactionProvider({children}: PropsWithChildren) {
         throw new Error('User not authenticated.');
       }
 
-      setIsLoading(true);
+      setIsMutating(true);
 
       try {
         await service.delete(user.id, transactionId);
         setTransactions((previous) => previous.filter((transaction) => transaction.id !== transactionId));
       } finally {
-        setIsLoading(false);
+        setIsMutating(false);
       }
     }, [user]
   );
@@ -98,7 +99,7 @@ export function TransactionProvider({children}: PropsWithChildren) {
     void loadTransactions();
   }, [loadTransactions]);
 
-  const value = useMemo(() => ({transactions, isLoading, loadTransactions, createTransaction, updateTransaction, deleteTransaction}), [transactions, isLoading, loadTransactions, createTransaction, updateTransaction, deleteTransaction]);
+  const value = useMemo(() => ({transactions, isInitializing, isMutating, loadTransactions, createTransaction, updateTransaction, deleteTransaction}), [transactions, isInitializing, isMutating, loadTransactions, createTransaction, updateTransaction, deleteTransaction]);
 
   return (
     <TransactionContext.Provider value={value}>

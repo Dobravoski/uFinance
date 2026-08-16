@@ -4,7 +4,6 @@ export const ptBR = {
     confirm: "Confirmar",
     delete: "Excluir",
     edit: "Editar",
-    save: "Salvar",
     saveChanges: "Salvar alterações",
     nameLabel: "Nome",
     emailLabel: "E-mail",
@@ -182,7 +181,6 @@ export const ptBR = {
       userDisabled: "Esta conta foi desativada.",
       invalidEmail: "Informe um e-mail válido.",
       weakPassword: "A senha informada é muito fraca.",
-      unexpected: "Ocorreu um erro inesperado. Tente novamente.",
     },
   },
 };

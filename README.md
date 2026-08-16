@@ -32,7 +32,6 @@ This README documents the project as it exists today: what it does, how to run i
 - [Key architectural decisions](#key-architectural-decisions)
 - [Decisions considered and abandoned](#decisions-considered-and-abandoned)
 - [Known limitations & things to know before running](#known-limitations--things-to-know-before-running)
-- [Possible next steps](#possible-next-steps)
 - [License](#license)
 
 ## What it does
@@ -119,6 +118,14 @@ cp server/.env.example server/.env
 | `IMAGEKIT_PUBLIC_KEY` | Your ImageKit public key |
 
 ### Run the ImageKit auth server
+
+`server/` is a standalone Node project with its own `package.json`, so it needs its own install once:
+
+```bash
+cd server
+npm install
+cd ..
+```
 
 Profile photo upload needs this running (see [ImageKit and credential safety](#imagekit-and-credential-safety) for why):
 
@@ -249,7 +256,7 @@ Firebase Authentication with email and password, wrapped by `src/services/auth/a
 
 ### Transactions domain
 
-The most complete vertical slice in the project: `src/domains/transactions/` owns its own types (`domains/`), Zod schemas (`schemas/`), Firestore repository, service, Context + `useTransactions` hook, domain-specific UI (`TransactionForm`, `TransactionItem`), locale-aware category/type option lists (`constants/`), and pure calculation utilities (`utils/`).
+The most complete vertical slice in the project: `src/domains/transactions/` owns its own types (`domains/`), Zod schemas (`schemas/`), Firestore repository, service, Context + `useTransactions` hook, domain-specific UI (`TransactionForm`, `TransactionItem`), locale-aware category/type option lists (`constants/`), and pure functions over `Transaction[]` (`utils/`) — sorting, filtering by type/date range, and the balance/monthly-summary math used by the dashboard. Keeping that logic in `utils/` instead of inline in a screen is deliberate: a screen owns state and presentation, while a rule like "what counts as a match for these filters" belongs to the domain and can be reused (or tested) independently of any particular screen.
 
 A transaction is a discriminated union on `type`:
 
@@ -264,7 +271,7 @@ Each side has its own closed set of categories:
 | Income | Salary, Freelance, Investment, Gift, Other |
 | Expense | Food, Transport, Housing, Health, Education, Leisure, Shopping, Bills, Other |
 
-`TransactionContext` loads every transaction belonging to the signed-in user, keeps them sorted (`utils/sort-transactions.ts`) in memory, and exposes `createTransaction` / `updateTransaction` / `deleteTransaction` / `loadTransactions` — consumed by both the Home dashboard (via `calculateBalance` / `calculateMonthlySummary` in `utils/transaction-summary.ts`) and the Transactions stack.
+`TransactionContext` loads every transaction belonging to the signed-in user, keeps them sorted (`utils/sort-transactions.ts`) in memory, and exposes `createTransaction` / `updateTransaction` / `deleteTransaction` / `loadTransactions` — consumed by both the Home dashboard (via `calculateBalance` / `calculateMonthlySummary` in `utils/transaction-summary.ts`) and the Transactions stack. It also exposes two separate loading flags instead of one: `isInitializing` (true only while the first fetch for the current user is in flight) and `isMutating` (true while a create/update/delete is running). Splitting them matters in practice — since `TransactionContext` sits above the whole app, a single shared flag would make the Home dashboard flash back to a full-screen spinner every time a transaction is created or edited from another screen, even though the list Home already has is still perfectly valid.
 
 ### Firestore persistence
 
@@ -321,10 +328,10 @@ Two approaches coexist, each matched to what the form actually needs. The transa
 | Decision | Why |
 |---|---|
 | Domain-driven modules (`domains/transactions`, `domains/user`) instead of a flat `services/` + `screens/` split | Keeps everything that changes together — types, schemas, Firestore access, orchestration, domain UI — in one place, with its public surface explicit through an `index.ts` barrel. |
-| Repository → Service → Context layering | The repository is the only layer that knows Firestore's document shape; the service orchestrates (and is where cross-cutting steps like "upload, then persist the URL" live); the context is a thin React-facing adapter holding UI state (`isLoading`, the in-memory list). Swapping the backing store only ever touches the repository. |
+| Repository → Service → Context layering | The repository is the only layer that knows Firestore's document shape; the service orchestrates (and is where cross-cutting steps like "upload, then persist the URL" live); the context is a thin React-facing adapter holding UI state (loading flags, the in-memory list). Swapping the backing store only ever touches the repository. |
 | React Context API instead of a state-management library | The app's global state is small and mostly per-feature (session, profile, theme, language, toast, transactions) — plain Context plus a handful of thin hooks was enough, and it keeps the state story approachable for a project whose point is learning the mechanics, not a library's API surface. |
 | Every `useX()` hook is just `useContext` + a thrown error outside its provider | Consuming state reads the same way everywhere in the tree, regardless of which context it's coming from, and misuse fails loudly at the call site instead of silently returning `undefined`. |
-| Firebase Storage configured but not used for uploads | See [Decisions considered and abandoned](#decisions-considered-and-abandoned). |
+| Firebase Storage set up early on, then dropped in favor of ImageKit | See [Decisions considered and abandoned](#decisions-considered-and-abandoned). |
 | A small standalone Express server just for ImageKit auth | See [ImageKit and credential safety](#imagekit-and-credential-safety). |
 | Zod only where the form actually needs it | The transaction form has real conditional logic (category depends on type, description has a max length, amount needs locale-aware parsing) — a schema earns its keep there. Login/Register are two required fields each, where a schema would add more ceremony than the validation itself. |
 | Theme and Language built as parallel, hand-rolled Contexts | Both are the same shape of problem ("pick a preference, resolve it against a system default, persist it") — building `LanguageContext` as a direct mirror of the already-working `ThemeContext` kept the two consistent, even though the actual string lookup is delegated to `react-i18next` rather than hand-rolled. |
@@ -332,8 +339,8 @@ Two approaches coexist, each matched to what the form actually needs. The transa
 
 ## Decisions considered and abandoned
 
-- **Firebase Storage → ImageKit.** `services/firebase/config.ts` still initializes Firebase Storage, but no upload in the app goes through it. Every photo upload goes through ImageKit instead, chosen deliberately as part of this training project — to practice integrating a dedicated storage/CDN provider and its signed-upload flow, rather than defaulting to whatever the Auth/Firestore provider also happens to offer.
-- **A flat `models/` folder for shared types → domain-scoped types.** Earlier in the project, shared types for transactions, users and categories lived together in one flat models folder. As the domain layer took shape — each domain owning its own types, schemas, repository and service — that flat structure stopped making sense, since a type really belongs next to the domain that defines and validates it, not in a shared bucket.
+- **Firebase Storage → ImageKit.** The project initially set up Firebase Storage alongside Auth and Firestore, but every photo upload was built to go through ImageKit instead — chosen deliberately as part of this training project, to practice integrating a dedicated storage/CDN provider and its signed-upload flow, rather than defaulting to whatever the Auth/Firestore provider also happens to offer. Once it was confirmed nothing in the app still depended on it, the unused Firebase Storage initialization was removed from `services/firebase/config.ts`.
+- **A flat `models/` folder for shared types → domain-scoped types.** Earlier in the project, shared types for transactions, users and categories lived together in one flat models folder. As the domain layer took shape — each domain owning its own types, schemas, repository and service — that flat structure stopped making sense, since a type really belongs next to the domain that defines and validates it, not in a shared bucket. The old folder was later removed once nothing referenced it anymore.
 - **A fully hand-rolled i18n solution → `react-i18next` for the translation engine.** The preference/persistence/system-detection part of `LanguageContext` still mirrors `ThemeContext` by hand, but the actual `t()` lookup, interpolation and fallback-language logic were delegated to `react-i18next` rather than reimplemented — there was enough real complexity there (interpolation, fallbacks, pluralization) that reimplementing it wouldn't have taught much beyond what integrating an established library already does.
 
 ## Known limitations & things to know before running
@@ -342,16 +349,7 @@ Two approaches coexist, each matched to what the form actually needs. The transa
 - **`localhost` won't reach your dev machine from a physical device.** If you're testing on a phone through Expo Go, `EXPO_PUBLIC_IMAGEKIT_AUTHENTICATION_ENDPOINT` needs to point at your machine's LAN IP (or a tunnel), not `localhost`.
 - **Firestore security rules aren't part of this repository.** They need to be configured directly in your Firebase project's console — nothing in the codebase enforces them.
 - **Profile photo upload needs both a valid ImageKit account and the auth server running.** Without it, `updateUserPhoto` will fail.
-- **Only email/password authentication is implemented** — there's no social sign-in and no password-reset flow yet.
-
-## Possible next steps
-
-A few natural directions if the project keeps growing, based on what's already partially in place:
-
-- A password-reset flow (Firebase Auth already supports it; nothing calls it yet)
-- More locales, now that the translation infrastructure supports adding them
-- Search and recurring transactions
-- Automated tests around the domain layer (repositories/services are already isolated enough to unit-test independently of the UI)
+- **Only email/password authentication is implemented** — there's no social sign-in and no password-reset flow.
 
 ## License
 

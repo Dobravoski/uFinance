@@ -3,7 +3,8 @@ import type { CreateTransaction } from '../../schemas';
 
 export interface TransactionContextValue {
   transactions: Transaction[];
-  isLoading: boolean;
+  isInitializing: boolean;
+  isMutating: boolean;
 
   loadTransactions(): Promise<void>;
 

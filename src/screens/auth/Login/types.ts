@@ -3,7 +3,7 @@ export interface LoginFormData {
     password: string;
 }
 
-export interface LoginFormErros {
+export interface LoginFormErrors {
     email?: string;
     password?: string;
 }

@@ -6,7 +6,6 @@ export const enUS: typeof ptBR = {
     confirm: "Confirm",
     delete: "Delete",
     edit: "Edit",
-    save: "Save",
     saveChanges: "Save changes",
     nameLabel: "Name",
     emailLabel: "Email",
@@ -184,7 +183,6 @@ export const enUS: typeof ptBR = {
       userDisabled: "This account has been disabled.",
       invalidEmail: "Enter a valid email.",
       weakPassword: "The password provided is too weak.",
-      unexpected: "An unexpected error occurred. Please try again.",
     },
   },
 };

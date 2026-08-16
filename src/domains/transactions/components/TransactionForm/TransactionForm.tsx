@@ -7,7 +7,7 @@ import { useTransactionForm } from './useTransactionForm';
 import type { TransactionFormProps } from './types';
 import { styles } from './styles';
 
-export function TransactionForm({initialValues, onSubmit, submitLabel}: TransactionFormProps) {
+export function TransactionForm({initialValues, onSubmit, submitLabel, loading}: TransactionFormProps) {
   const { t } = useTranslation();
   const { control, categoryOptions, submit } = useTransactionForm({initialValues, onSubmit});
   const TRANSACTION_TYPE_OPTIONS = getTransactionTypeOptions(t);
@@ -84,7 +84,7 @@ export function TransactionForm({initialValues, onSubmit, submitLabel}: Transact
         )}
       />
 
-      <AppButton title={submitLabel} onPress={submit}/>
+      <AppButton title={submitLabel} onPress={submit} disabled={loading}/>
     </View>
   );
 }

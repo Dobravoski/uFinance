@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ScreenContainer } from '@/components';
 import { TransactionForm, useTransactions } from '@/domains/transactions';
@@ -12,20 +13,25 @@ export function CreateTransactionScreen({ navigation }: Props) {
   const { t } = useTranslation();
   const { createTransaction } = useTransactions();
   const { showToast } = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
 const handleSubmit = async (data: CreateTransaction) => {
+  setIsSubmitting(true);
+
   try {
     await createTransaction(data);
     showToast({type: 'success', message: t('transactions.create.toast.success')});
     navigation.goBack();
   } catch {
     showToast({type: 'error', message: t('transactions.create.toast.error')});
+  } finally {
+    setIsSubmitting(false);
   }
 };
 
   return (
     <ScreenContainer>
-      <TransactionForm onSubmit={handleSubmit} submitLabel={t('transactions.create.submitButton')}/>
+      <TransactionForm onSubmit={handleSubmit} submitLabel={t('transactions.create.submitButton')} loading={isSubmitting}/>
     </ScreenContainer>
   );
 }

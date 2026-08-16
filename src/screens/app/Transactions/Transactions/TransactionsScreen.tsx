@@ -3,7 +3,7 @@ import { ActivityIndicator, FlatList, View } from "react-native";
 import { useTranslation } from "react-i18next";
 import { AppConfirmationModal, AppText } from "@/components";
 import { AddTransactionFab } from "../../components";
-import { TransactionItem, useTransactions } from "@/domains/transactions";
+import { TransactionItem, useTransactions, filterTransactions } from "@/domains/transactions";
 import { TransactionFilters } from "../components";
 import { useToast } from "@/contexts/ToastContext";
 import { useThemedStyles } from "@/hooks/useThemedStyles";
@@ -14,7 +14,7 @@ import type { TransactionTypeFilter } from "../components";
 export function TransactionsScreen({navigation}: TransactionsScreenProps) {
   const styles = useThemedStyles(createStyles);
   const { t } = useTranslation();
-  const {transactions, isLoading, deleteTransaction} = useTransactions();
+  const {transactions, isInitializing, deleteTransaction} = useTransactions();
   const { showToast } = useToast();
 
   const [transactionToDelete, setTransactionToDelete] = useState<string | null>(null);
@@ -23,18 +23,7 @@ export function TransactionsScreen({navigation}: TransactionsScreenProps) {
   const [endDate, setEndDate] = useState<Date | undefined>();
 
   const filteredTransactions = useMemo(() => {
-    return transactions.filter((transaction) => {
-      if (typeFilter !== "all" && transaction.type !== typeFilter) {
-        return false;
-      }
-      if (startDate && transaction.date < getStartOfDay(startDate)) {
-        return false;
-      }
-      if (endDate && transaction.date > getEndOfDay(endDate)) {
-        return false;
-      }
-      return true;
-    });
+    return filterTransactions(transactions, {type: typeFilter, startDate, endDate});
   }, [transactions, typeFilter, startDate, endDate]);
 
   function handleCreate() {
@@ -73,22 +62,10 @@ export function TransactionsScreen({navigation}: TransactionsScreenProps) {
     setEndDate(undefined);
   }
 
-  function getStartOfDay(date: Date): Date {
-    const startOfDay = new Date(date);
-    startOfDay.setHours(0, 0, 0, 0);
-    return startOfDay;
-  }
-
-  function getEndOfDay(date: Date): Date {
-    const endOfDay = new Date(date);
-    endOfDay.setHours(23, 59, 59, 999);
-    return endOfDay;
-  }
-
   const hasTransactions = transactions.length > 0;
   const hasFilteredTransactions = filteredTransactions.length > 0;
 
-  if (isLoading && !hasTransactions) {
+  if (isInitializing && !hasTransactions) {
     return (
       <View style={styles.container}>
         <ActivityIndicator style={styles.loading} />

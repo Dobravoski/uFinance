@@ -8,7 +8,7 @@ import { HomeScreenProps } from "./types";
 import { useUser, useTheme, useThemedStyles } from "@/hooks";
 
 export function HomeScreen({navigation}: HomeScreenProps) {
-    const { transactions, isLoading } = useTransactions();
+    const { transactions, isInitializing } = useTransactions();
     const { user } = useUser();
     const { colors } = useTheme();
     const styles = useThemedStyles(createStyles);
@@ -28,7 +28,7 @@ export function HomeScreen({navigation}: HomeScreenProps) {
     return (
         <ScreenContainer contentContainerStyle={styles.container} edges={["left", "right", "bottom"]}>
             <View style={styles.content}>
-                {isLoading ? (
+                {isInitializing ? (
                     <View style={styles.loading}>
                         <ActivityIndicator size="large" {...loadingProps} />
                     </View>

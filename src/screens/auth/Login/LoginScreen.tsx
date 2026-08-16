@@ -2,7 +2,7 @@ import { View, Pressable } from "react-native";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { createStyles } from "./styles";
-import { LoginFormErros, LoginFormData } from "./types";
+import { LoginFormErrors, LoginFormData } from "./types";
 import { AppText, AppTextInput, AppButton, ScreenContainer, AppLogo } from "@/components"
 import { PasswordInput } from "../components/PasswordInput";
 import { useAuth, useThemedStyles } from "@/hooks";
@@ -22,7 +22,7 @@ export function LoginScreen() {
     const navigation = useNavigation<NavigationProps>();
 
     const [formData, setFormData] = useState<LoginFormData>({email: "", password: ""});
-    const [formErrors, setFormErrors] = useState<LoginFormErros>({});
+    const [formErrors, setFormErrors] = useState<LoginFormErrors>({});
     const [authError, setAuthError] = useState<string | null>(null);
 
     const handleSignIn = async () => {
